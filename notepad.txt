@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=sqljdbc_auth.dll -DgroupId=com.bayner -DartifactId=sqlServerNative_win32 -Dversion=1.0 -Dpackaging=dll

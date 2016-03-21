@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation=
+                  "http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 http://maven.apache.org/xsd/assembly-1.1.3.xsd
+                   http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 ">
+    <id>jni-jar</id>
+    <!--<formats>-->
+        <!--<format>dll</format>-->
+        <!--<format>so</format>-->
+    <!--</formats>-->
+    <!--<includeBaseDirectory>true</includeBaseDirectory>-->
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>natives</outputDirectory>
+            <outputFileNameMapping>${artifact.artifactId}${dashClassifier?}.${artifact.extension}</outputFileNameMapping>
+            <unpack>false</unpack>
+            <useProjectArtifact>false</useProjectArtifact>
+            <useStrictFiltering>false</useStrictFiltering>
+            <includes>
+                <include>*:*:dll:*</include>
+                <include>*:*:so:*</include>
+                <include>*:*:jnilib:*</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>
