@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="SQL Server (Microsoft) - jdepo@deposrv" uuid="ec2b5e5a-4356-4367-840a-6442883e5a69">
+      <secret-storage>master_key</secret-storage>
+      <domain-auth>true</domain-auth>
+    </data-source>
+  </component>
+</project>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.ProductOutputController">
+   <children>
+      <Pane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="554.0" prefWidth="980.0">
+          <children>
+              <HBox alignment="CENTER" prefHeight="65.0" prefWidth="980.0" spacing="20.0">
+                  <children>
+                      <Label prefHeight="17.0" prefWidth="124.0" text="Ürün Çıkış Ekranı" />
+                      <RadioButton fx:id="radioTedarikci" mnemonicParsing="false" text="Tedarikçi">
+                          <toggleGroup>
+                              <ToggleGroup fx:id="companyTypes" />
+                          </toggleGroup>
+                      </RadioButton>
+                      <RadioButton mnemonicParsing="false" text="Şahıs" toggleGroup="$companyTypes" />
+                      <RadioButton mnemonicParsing="false" text="Pazarcı/Esnaf" toggleGroup="$companyTypes" />
+                      <RadioButton mnemonicParsing="false" text="Diğer" toggleGroup="$companyTypes" />
+                  </children>
+                  <rotationAxis>
+                      <Point3D />
+                  </rotationAxis>
+              </HBox>
+              <HBox layoutX="1.0" layoutY="65.0" prefHeight="463.0" prefWidth="980.0">
+                  <children>
+                      <VBox prefHeight="493.0" prefWidth="685.0">
+                          <children>
+                              <GridPane>
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Müşteri :" />
+                                      <ComboBox fx:id="comboCustomer" editable="true" prefHeight="25.0" prefWidth="315.0" GridPane.columnIndex="1" />
+                                  </children>
+                              </GridPane>
+                              <GridPane>
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Depo Seçimi :" />
+                                      <ComboBox fx:id="comboDepot" editable="true" prefHeight="25.0" prefWidth="316.0" GridPane.columnIndex="1" />
+                                  </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="40.0">
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Ürün Seçimi :" />
+                                      <ComboBox fx:id="comboProducts" editable="true" prefHeight="25.0" prefWidth="322.0" GridPane.columnIndex="1" />
+                                  </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="70.0">
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Parti No :" />
+                                      <TextField fx:id="textPartiNo" GridPane.columnIndex="1" />
+                                  </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="100.0">
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Çıkış Miktarı :" />
+                                      <TextField fx:id="textOutAmount" GridPane.columnIndex="1" />
+                                      <!--<TextField GridPane.columnIndex="1" />-->
+                                  </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="130.0">
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Çıkış Tarihi :" />
+                                      <DatePicker fx:id="datePickerOutDate" prefHeight="25.0" prefWidth="319.0" GridPane.columnIndex="1" />
+                                  </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="160.0">
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Çıkış Saati :" />
+                              <TextField fx:id="textHour" GridPane.columnIndex="1" />
+                                  </children>
+                              </GridPane>
+                              <GridPane layoutX="10.0" layoutY="190.0">
+                                  <columnConstraints>
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  </columnConstraints>
+                                  <rowConstraints>
+                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  </rowConstraints>
+                                  <children>
+                                      <Label text="Müşteri Çalışanı :" />
+                              <ComboBox fx:id="comboCustomerWorker" editable="true" prefHeight="25.0" prefWidth="315.0" GridPane.columnIndex="1" />
+                                  </children>
+                              </GridPane>
+                          </children>
+                          <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                          </padding>
+                      </VBox>
+                      <VBox alignment="CENTER" prefHeight="463.0" prefWidth="290.0">
+                          <children>
+                        <Button fx:id="buttonExit" mnemonicParsing="false" onAction="#onExit" prefHeight="49.0" prefWidth="104.0" text="Çıkış">
+                           <VBox.margin>
+                              <Insets bottom="30.0" />
+                           </VBox.margin>
+                        </Button>
+                              <Button mnemonicParsing="false" onAction="#onSaveAndPrint" prefHeight="49.0" prefWidth="104.0" text="Kaydet ve Yazdır" />
+                              <HBox prefHeight="100.0" prefWidth="200.0" />
+                              <Label text="Listede yer almayan müşteriler için tıklayınız" />
+                              <Button fx:id="buttonEkle" mnemonicParsing="false" onAction="#customerAdd" prefHeight="42.0" prefWidth="81.0" text="Müşteri Ekle" />
+                          </children>
+                          <padding>
+                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                          </padding>
+                          <HBox.margin>
+                              <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                          </HBox.margin>
+                      </VBox>
+                  </children>
+              </HBox>
+          </children>
+      </Pane>
+   </children>
+</StackPane>

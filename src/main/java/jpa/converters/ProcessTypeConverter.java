@@ -1,9 +1,8 @@
 package jpa.converters;
 
-import jpa.ProcessType;
+import jpa.converters.enums.ProcessType;
 
 import javax.persistence.AttributeConverter;
-import javax.persistence.Convert;
 import javax.persistence.Converter;
 
 /**

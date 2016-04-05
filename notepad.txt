@@ -1,1 +1,172 @@
 mvn install:install-file -Dfile=sqljdbc_auth.dll -DgroupId=com.bayner -DartifactId=sqlServerNative_win32 -Dversion=1.0 -Dpackaging=dll
+
+
+MERGE INTO companyUsers AS Target
+USING (VALUES ('Kadir','BASOL')) AS Source (NewName, NewReasonType)
+ON Target.userName = Source.NewName
+WHEN MATCHED THEN
+UPDATE SET userName = Source.NewName , userSurname = Source.NewReasonType , tcIdentityNo = 222
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( userName , userSurname , tcIdentityNo ) VALUES (NewName, NewReasonType , 111 );
+
+
+MERGE INTO companyUsers AS Target
+USING (VALUES ('Kadir','BASOL')) AS Source (NewName, NewReasonType)
+ON Target.userName = Source.NewName
+WHEN MATCHED THEN
+UPDATE SET userName = 'Kadir' , userSurname = 'BASOL', tcIdentityNo = 222
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( userName , userSurname , tcIdentityNo ) VALUES (NewName, NewReasonType , 111 );
+
+
+MERGE INTO companyUsers AS Target
+ON Target.userName = Source.NewName
+WHEN MATCHED THEN
+UPDATE SET userName = 'Kadir' , userSurname = 'BASOL', tcIdentityNo = 222
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( userName , userSurname , tcIdentityNo ) VALUES (NewName, NewReasonType , 111 );
+
+
+MERGE INTO companyUsers AS Target
+ON Target.userName = Source.NewName
+WHEN MATCHED THEN
+UPDATE SET userName = ? , userSurname = ?, tcIdentityNo = 222
+WHEN NOT MATCHED BY TARGET THEN
+INSERT ( userName , userSurname , tcIdentityNo ) VALUES (NewName, NewReasonType , 111 );
+
+
+
+IF (NOT EXISTS(SELECT * FROM Clock WHERE clockDate = '08/10/2012')
+    AND userName = 'test')
+BEGIN
+    INSERT INTO Clock(clockDate, userName, breakOut)
+    VALUES(GetDate(), 'test', GetDate())
+END
+ELSE
+BEGIN
+    UPDATE Clock
+    SET breakOut = GetDate()
+    WHERE clockDate = '08/10/2012' AND userName = 'test'
+END
+
+
+insert into ACCESSLEVELS select * from (
+select 0, 'admin' union
+select 1, 'SEO' union
+select 2, 'sales director' union
+select 3, 'manager' union
+select 4, 'REP'
+) x where not exists(select * from ACCESSLEVELS);
+
+bulk insert
+insert into mytable(Name, phone)
+select name, phone
+from TABLE(v_my_data);
+
+
+
+Collection/Array input
+CREATE OR REPLACE PROCEDURE insert_mydata(v_my_data my_table)
+AS
+BEGIN
+  forall i in 1..v_my_data.count
+    insert into Some_Table(name, phone)         --
+      values(v_my_data(i).name, v_my_data(i).phone);
+END;
+
+
+CREATE TRIGGER [login_log]
+ON ALL SERVER
+FOR LOGON
+AS
+BEGIN
+	SET NOCOUNT ON
+	EXECUTE [dbo].[onLogin];
+END
+GO
+
+ENABLE TRIGGER [login_log] ON ALL SERVER
+GO
+
+SQL Sunucu Trigger Recovery
+sqlcmd -S LocalHost -d master -A
+DROP TRIGGER Tr_ServerLogon ON ALL SERVER
+GO
+
+
+
+IDENT INCREASE
+DBCC CHECKIDENT('tablename', RESEED)
+
+
+
+Termal Printer SDK
+    public void PrintString(String s) throws Exception{
+    DocPrintJob job = PrintServiceLookup.lookupDefaultPrintService().createPrintJob();
+    //Get's the default printer so it must be set.
+    System.out.println(job + " <- printer");
+    DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+    byte[] b = s.getBytes("CP437");
+    //Get's the bytes from the String(So that characters such as å ä ö may be printed).
+    Doc doc = new SimpleDoc(b, flavor, null);
+    //Includes the content to print(b) and what kind of content it is (flavor, in this case a String turned into a byte array).
+    job.print(doc, null);
+}
+
+
+
+
+row index almak mysql:
+SELECT
+    @i:=@i+1 AS iterator,
+    t.*
+FROM
+    tablename AS t,
+    (SELECT @i:=0) AS foo
+
+
+
+
+
+uniform extern texture ScreenTexture;
+
+sampler ScreenS = sampler_state
+{
+    Texture = <ScreenTexture>;
+};
+
+float wave;                // pi/.75 is a good default
+float distortion;        // 1 is a good default
+float2 centerCoord;        // 0.5,0.5 is the screen center
+
+float4 PixelShader(float2 texCoord: TEXCOORD0) : COLOR
+{
+    float2 distance = abs(texCoord - centerCoord);
+    float scalar = length(distance);
+
+    // invert the scale so 1 is centerpoint
+    scalar = abs(1 - scalar);
+
+    // calculate how far to distort for this pixel
+    float sinoffset = sin(wave / scalar);
+    sinoffset = clamp(sinoffset, 0, 1);
+
+    // calculate which direction to distort
+    float sinsign = cos(wave / scalar);
+
+    // reduce the distortion effect
+    sinoffset = sinoffset * distortion/32;
+
+    // pick a pixel on the screen for this pixel, based on
+    // the calculated offset and direction
+    float4 color = tex2D(ScreenS, texCoord+(sinoffset*sinsign));
+
+    return color;
+}
+technique
+{
+    pass P0
+    {
+        PixelShader = compile ps_2_0 PixelShader();
+    }
+}

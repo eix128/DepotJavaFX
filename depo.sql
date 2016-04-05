@@ -61,7 +61,7 @@ INSERT INTO `customertypes` VALUES ('4', '4', 'Diğer');
 DROP TABLE IF EXISTS `depots`;
 CREATE TABLE `depots` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `depotId` int(11) DEFAULT NULL,
+  `depot` int(11) DEFAULT NULL,
   `depotName` varchar(255) COLLATE utf8_turkish_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;
@@ -88,10 +88,10 @@ INSERT INTO `depots` VALUES ('12', '12', 'Buz Deposu\r\n');
 DROP TABLE IF EXISTS `process`;
 CREATE TABLE `process` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `productId` int(255) DEFAULT NULL,
-  `depotId` int(11) DEFAULT NULL,
+  `product` int(255) DEFAULT NULL,
+  `depot` int(11) DEFAULT NULL,
   `processType` enum('') COLLATE utf8_turkish_ci DEFAULT NULL,
-  `companyId` int(11) DEFAULT NULL,
+  `company` int(11) DEFAULT NULL,
   `processAmount` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_turkish_ci;

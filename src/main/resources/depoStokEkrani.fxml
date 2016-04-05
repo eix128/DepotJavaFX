@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.DepotsController">
+   <children>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="963.0">
+         <children>
+            <SplitPane dividerPositions="0.42513089005235605" prefHeight="124.0" prefWidth="957.0">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <GridPane layoutX="8.0" layoutY="7.0" prefHeight="114.0" prefWidth="396.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="193.0" minWidth="10.0" prefWidth="114.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="288.0" minWidth="10.0" prefWidth="282.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Ürün Adı :" />
+                              <Label text="Depo Adı :" GridPane.rowIndex="1" />
+                              <Label text="Müşteri :" GridPane.rowIndex="2" />
+                              <ComboBox fx:id="comboProducts" editable="true" prefHeight="25.0" prefWidth="271.0" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="comboDepots" editable="true" prefHeight="25.0" prefWidth="271.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="comboCustomers" editable="true" prefHeight="25.0" prefWidth="271.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="546.0">
+                     <children>
+                        <GridPane prefHeight="122.0" prefWidth="546.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label text="Depo Stok Ekranı" GridPane.columnIndex="1">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Button fx:id="buttonClear" mnemonicParsing="false" onAction="#onButtonClear" text="Sıfırla" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Button fx:id="buttonPrint" mnemonicParsing="false" onAction="#onButtonPrint" text="Yazdır" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           </children>
+                        </GridPane>
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+            <TableView fx:id="tableDepots" layoutX="1.0" layoutY="124.0" prefHeight="510.0" prefWidth="963.0">
+              <columns>
+                <TableColumn prefWidth="171.0" text="Parti No" />
+                <TableColumn prefWidth="163.0" text="Müşteri" />
+                  <TableColumn prefWidth="153.0" text="Ürün" />
+                  <TableColumn prefWidth="169.0" text="Depo" />
+                  <TableColumn prefWidth="215.0" text="Mevcut" />
+              </columns>
+            </TableView>
+         </children>
+      </Pane>
+   </children>
+</StackPane>

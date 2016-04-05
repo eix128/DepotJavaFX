@@ -1,8 +1,13 @@
 package kernel.actors;
 
+import com.google.common.util.concurrent.ListenableFuture;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import jpa.converters.enums.PriceType;
+import jpa.converters.enums.UnitType;
 import kernel.events.ConnectionException;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 
 /**
@@ -14,16 +19,17 @@ public interface DepotManager {
      * @param companyId         Ürün girişi yapan şirket id si queryCompanyId den elde edilebilir
      * @param companyUserId     Ürün girişi yapan
      * @param productId Ürün id si
-     * @param count    Girilecek olan ürünün kasa sayısı
      * @param depoId   Ürün girilecek olan depo no
-     * @param tutar    eklenecek olan mal tutarı
      * @param aciklama yetkili açıklaması
      * @return Parti Numarasını verir , başarısız durumda parti no -1 gelir
      * @throws ConnectionException if database connection fails during query
      */
-    public Integer productIn( int companyId , int companyUserId , int productId , long count , int depoId , long tutar  , String aciklama  ) throws ConnectionException;
+    public void productIn(
+            StackPane activePanel , int partiNo , int companyId, int
+            companyUserId, int productId, long units, UnitType unitsType, int depoId, long price ,
+            PriceType priceType , String aciklama) throws ConnectionException;
 
-    public void productOut( int partiNo ,  int companyId , int productId , long count , int depoId , long tutar , String aciklama ) throws ConnectionException;
+    public void productOut(int partiNo, int companyId , int companyUserId , int productId, long count, int depoId, long tutar, String aciklama) throws ConnectionException;
 
     public void productMove( int targetDepotId , int sourceDepotId , int partiNo ,  int companyId , int productId , long count , int depoId , long tutar , String aciklama ) throws ConnectionException;
 
@@ -66,6 +72,4 @@ public interface DepotManager {
     public int queryProductId(  String productName ) throws ConnectionException;
     public int queryDepotId(  String depotLocation ) throws ConnectionException;
     public int queryCompanyUserId(  String userName , String userSurname , int tcKimlikNo ) throws ConnectionException;
-
-    public String getUserName();
 }
