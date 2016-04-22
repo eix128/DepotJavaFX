@@ -6,6 +6,8 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -14,10 +16,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
-<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.DepotsController">
+<StackPane fx:id="stackPane" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.controller.DepotsController">
    <children>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="963.0">
+      <Pane fx:id="mainPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="963.0">
          <children>
             <SplitPane dividerPositions="0.42513089005235605" prefHeight="124.0" prefWidth="957.0">
               <items>
@@ -62,8 +63,22 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="buttonClear" mnemonicParsing="false" onAction="#onButtonClear" text="Sıfırla" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Button fx:id="buttonPrint" mnemonicParsing="false" onAction="#onButtonPrint" text="Yazdır" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button fx:id="buttonClear" mnemonicParsing="false" onAction="#onButtonClear" prefHeight="40.0" prefWidth="97.0" text="Sıfırla" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <graphic>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icon/clear.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="buttonPrint" mnemonicParsing="false" onAction="#onButtonPrint" prefHeight="40.0" prefWidth="98.0" text="Yazdır" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <graphic>
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@icon/print.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
                         </GridPane>
                      </children>
@@ -72,11 +87,11 @@
             </SplitPane>
             <TableView fx:id="tableDepots" layoutX="1.0" layoutY="124.0" prefHeight="510.0" prefWidth="963.0">
               <columns>
-                <TableColumn prefWidth="171.0" text="Parti No" />
-                <TableColumn prefWidth="163.0" text="Müşteri" />
-                  <TableColumn prefWidth="153.0" text="Ürün" />
-                  <TableColumn prefWidth="169.0" text="Depo" />
-                  <TableColumn prefWidth="215.0" text="Mevcut" />
+                <TableColumn fx:id="columnPartNo" prefWidth="171.0" text="Parti No" />
+                <TableColumn fx:id="columnCustomer" prefWidth="163.0" text="Müşteri" />
+                  <TableColumn fx:id="columnProducts" prefWidth="153.0" text="Ürün" />
+                  <TableColumn fx:id="columnDepots" prefWidth="169.0" text="Depo" />
+                  <TableColumn fx:id="columnUnits" prefWidth="215.0" text="Mevcut" />
               </columns>
             </TableView>
          </children>

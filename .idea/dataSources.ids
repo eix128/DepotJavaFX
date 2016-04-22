@@ -5,7 +5,7 @@
       <extra-name-characters>$#@</extra-name-characters>
       <identifier-quote-string>&quot;</identifier-quote-string>
     </database-info>
-    <case-sensitivity plain-identifiers="mıxed" quoted-identifiers="mıxed"/>
+    <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed"/>
     <database-model serializer="dbm" rdbms="MSSQL" format-version="2.5">
       <database id="1" name="jdepo">
         <object-id>7</object-id>
@@ -13,7 +13,7 @@
       </database>
       <schema id="2" parent="1" name="dbo">
         <object-id>1</object-id>
-        <introspection-timestamp>2016-04-05.11:08:59.797</introspection-timestamp>
+        <introspection-timestamp>2016-04-20.19:13:50.760</introspection-timestamp>
       </schema>
       <table id="3" parent="2" name="commercialUsers">
         <object-id>1829581556</object-id>
@@ -28,7 +28,7 @@
       <table id="5" parent="2" name="customer">
         <object-id>1877581727</object-id>
         <created-timestamp>2016-04-05.09:54:28.310</created-timestamp>
-        <modified-timestamp>2016-04-05.09:54:28.483</modified-timestamp>
+        <modified-timestamp>2016-04-15.15:17:35.487</modified-timestamp>
       </table>
       <table id="6" parent="2" name="customerTypes">
         <object-id>1893581784</object-id>
@@ -40,96 +40,101 @@
         <created-timestamp>2016-04-05.09:54:28.343</created-timestamp>
         <modified-timestamp>2016-04-05.10:20:24.327</modified-timestamp>
       </table>
-      <table id="8" parent="2" name="priceTypes">
+      <table id="8" parent="2" name="partNoIndex">
+        <object-id>194099732</object-id>
+        <created-timestamp>2016-04-20.19:13:31.887</created-timestamp>
+        <modified-timestamp>2016-04-20.19:13:31.887</modified-timestamp>
+      </table>
+      <table id="9" parent="2" name="priceTypes">
         <object-id>1717581157</object-id>
         <created-timestamp>2016-03-29.10:53:45.340</created-timestamp>
         <modified-timestamp>2016-03-29.13:53:55.263</modified-timestamp>
       </table>
-      <table id="9" parent="2" name="process">
+      <table id="10" parent="2" name="process">
         <object-id>1925581898</object-id>
         <created-timestamp>2016-04-05.09:54:28.363</created-timestamp>
-        <modified-timestamp>2016-04-05.11:08:54.697</modified-timestamp>
+        <modified-timestamp>2016-04-18.17:38:48.353</modified-timestamp>
       </table>
-      <table id="10" parent="2" name="products">
+      <table id="11" parent="2" name="products">
         <object-id>1941581955</object-id>
         <created-timestamp>2016-04-05.09:54:28.380</created-timestamp>
         <modified-timestamp>2016-04-05.09:54:28.527</modified-timestamp>
       </table>
-      <table id="11" parent="2" name="totalProducts">
+      <table id="12" parent="2" name="totalProducts">
         <object-id>1957582012</object-id>
         <created-timestamp>2016-04-05.09:54:28.400</created-timestamp>
         <modified-timestamp>2016-04-05.10:20:14.467</modified-timestamp>
       </table>
-      <table id="12" parent="2" name="totalUnits">
-        <object-id>1973582069</object-id>
-        <created-timestamp>2016-04-05.09:54:28.410</created-timestamp>
-        <modified-timestamp>2016-04-05.10:28:52.677</modified-timestamp>
+      <table id="13" parent="2" name="totalUnits">
+        <object-id>82099333</object-id>
+        <created-timestamp>2016-04-19.15:39:21.597</created-timestamp>
+        <modified-timestamp>2016-04-19.15:42:54.420</modified-timestamp>
       </table>
-      <table id="13" parent="2" name="transferTypes">
+      <table id="14" parent="2" name="transferTypes">
         <object-id>1749581271</object-id>
         <created-timestamp>2016-03-29.10:54:34.357</created-timestamp>
         <modified-timestamp>2016-03-29.10:54:34.357</modified-timestamp>
       </table>
-      <table id="14" parent="2" name="unitTypes">
+      <table id="15" parent="2" name="unitTypes">
         <object-id>1685581043</object-id>
         <created-timestamp>2016-03-29.10:50:57.510</created-timestamp>
         <modified-timestamp>2016-03-29.10:52:51.583</modified-timestamp>
       </table>
-      <routine id="15" parent="2" name="DepotManager_addCompany">
+      <routine id="16" parent="2" name="DepotManager_addCompany">
         <object-id>1989582126</object-id>
         <created-timestamp>2016-04-05.09:54:28.420</created-timestamp>
-        <modified-timestamp>2016-04-05.09:54:28.420</modified-timestamp>
-        <routine-kind>PROCEDURE</routine-kind>
-        <type>PROC</type>
-      </routine>
-      <routine id="16" parent="2" name="DepotManager_productOut">
-        <object-id>2021582240</object-id>
-        <created-timestamp>2016-04-05.09:54:28.440</created-timestamp>
-        <modified-timestamp>2016-04-05.10:33:11.720</modified-timestamp>
+        <modified-timestamp>2016-04-19.15:41:53.100</modified-timestamp>
         <routine-kind>PROCEDURE</routine-kind>
         <type>PROC</type>
       </routine>
       <routine id="17" parent="2" name="DepotManager_productIn">
         <object-id>2005582183</object-id>
         <created-timestamp>2016-04-05.09:54:28.430</created-timestamp>
-        <modified-timestamp>2016-04-05.10:41:37.443</modified-timestamp>
+        <modified-timestamp>2016-04-18.18:49:11.040</modified-timestamp>
         <routine-kind>PROCEDURE</routine-kind>
         <type>PROC</type>
       </routine>
-      <routine id="18" parent="2" name="fn_soundxTR">
+      <routine id="18" parent="2" name="DepotManager_productOut">
+        <object-id>2021582240</object-id>
+        <created-timestamp>2016-04-05.09:54:28.440</created-timestamp>
+        <modified-timestamp>2016-04-19.15:43:15.750</modified-timestamp>
+        <routine-kind>PROCEDURE</routine-kind>
+        <type>PROC</type>
+      </routine>
+      <routine id="19" parent="2" name="fn_soundxTR">
         <object-id>2053582354</object-id>
         <created-timestamp>2016-04-05.09:54:28.457</created-timestamp>
         <modified-timestamp>2016-04-05.09:54:28.457</modified-timestamp>
         <routine-kind>FUNCTION</routine-kind>
         <type>SCALAR_FUN</type>
       </routine>
-      <routine id="19" parent="2" name="onLogin">
+      <routine id="20" parent="2" name="onLogin">
         <object-id>2037582297</object-id>
         <created-timestamp>2016-04-05.09:54:28.447</created-timestamp>
         <modified-timestamp>2016-04-05.09:54:28.447</modified-timestamp>
         <routine-kind>PROCEDURE</routine-kind>
         <type>PROC</type>
       </routine>
-      <column id="20" parent="3" name="id">
+      <column id="21" parent="3" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
         <sequence-identity>1(18)</sequence-identity>
       </column>
-      <column id="21" parent="3" name="ntlmName">
+      <column id="22" parent="3" name="ntlmName">
         <mandatory>1</mandatory>
         <data-type>varchar(64)</data-type>
         <default-expression>suser_sname()</default-expression>
       </column>
-      <column id="22" parent="3" name="userName">
+      <column id="23" parent="3" name="userName">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="23" parent="3" name="userSurname">
+      <column id="24" parent="3" name="userSurname">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="24" parent="3" name="tcKimlikNo">
+      <column id="25" parent="3" name="tcKimlikNo">
         <data-type>bigint</data-type>
       </column>
-      <index id="25" parent="3" name="PK__commerci__3213E83F38C120E7">
+      <index id="26" parent="3" name="PK__commerci__3213E83F38C120E7">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -137,7 +142,7 @@
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <key id="26" parent="3" name="PK__commerci__3213E83F38C120E7">
+      <key id="27" parent="3" name="PK__commerci__3213E83F38C120E7">
         <name-surrogate>1</name-surrogate>
         <object-id>2069582411</object-id>
         <created-timestamp>2016-04-05.09:54:28.463</created-timestamp>
@@ -146,33 +151,33 @@
         <underlying-index>PK__commerci__3213E83F38C120E7</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="27" parent="4" name="userName">
+      <column id="28" parent="4" name="userName">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="28" parent="4" name="userSurname">
+      <column id="29" parent="4" name="userSurname">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="29" parent="4" name="tcIdentityNo">
+      <column id="30" parent="4" name="tcIdentityNo">
         <data-type>bigint</data-type>
       </column>
-      <column id="30" parent="4" name="userEmail">
+      <column id="31" parent="4" name="userEmail">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="31" parent="4" name="userPhone">
+      <column id="32" parent="4" name="userPhone">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="32" parent="4" name="status">
+      <column id="33" parent="4" name="status">
         <data-type>tinyint</data-type>
       </column>
-      <column id="33" parent="4" name="id">
+      <column id="34" parent="4" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
         <sequence-identity>1(4)</sequence-identity>
       </column>
-      <column id="34" parent="4" name="companyid">
+      <column id="35" parent="4" name="companyid">
         <data-type>int</data-type>
       </column>
-      <index id="35" parent="4" name="CompanyUsersIndex">
+      <index id="36" parent="4" name="CompanyUsersIndex">
         <columns>userName
 userSurname
 companyid</columns>
@@ -180,14 +185,14 @@ companyid</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <index id="36" parent="4" name="PK__companyU__3213E83E02876067">
+      <index id="37" parent="4" name="PK__companyU__3213E83E02876067">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
         <position>2</position>
       </index>
-      <key id="37" parent="4" name="PK__companyU__3213E83E02876067">
+      <key id="38" parent="4" name="PK__companyU__3213E83E02876067">
         <name-surrogate>1</name-surrogate>
         <object-id>2085582468</object-id>
         <created-timestamp>2016-04-05.09:54:28.477</created-timestamp>
@@ -196,18 +201,15 @@ companyid</columns>
         <underlying-index>PK__companyU__3213E83E02876067</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="38" parent="5" name="id">
+      <column id="39" parent="5" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
         <sequence-identity>1(4)</sequence-identity>
       </column>
-      <column id="39" parent="5" name="name">
+      <column id="40" parent="5" name="name">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="40" parent="5" name="surname">
-        <data-type>varchar(64)</data-type>
-      </column>
-      <column id="41" parent="5" name="unvan">
+      <column id="41" parent="5" name="surname">
         <data-type>varchar(64)</data-type>
       </column>
       <column id="42" parent="5" name="type">
@@ -217,7 +219,7 @@ companyid</columns>
         <data-type>varchar(32)</data-type>
       </column>
       <column id="44" parent="5" name="address">
-        <data-type>varchar(255)</data-type>
+        <data-type>nvarchar(255)</data-type>
       </column>
       <column id="45" parent="5" name="tcKimlik">
         <data-type>bigint</data-type>
@@ -229,15 +231,19 @@ companyid</columns>
         <data-type>bigint</data-type>
       </column>
       <column id="48" parent="5" name="country">
-        <data-type>varchar(64)</data-type>
+        <data-type>nvarchar(64)</data-type>
       </column>
       <column id="49" parent="5" name="province">
-        <data-type>varchar(64)</data-type>
+        <data-type>nvarchar(64)</data-type>
       </column>
       <column id="50" parent="5" name="city">
-        <data-type>varchar(64)</data-type>
+        <data-type>nvarchar(64)</data-type>
       </column>
-      <index id="51" parent="5" name="PK__customer__3213E83F396D38E3">
+      <column id="51" parent="5" name="title">
+        <mandatory>1</mandatory>
+        <data-type>nvarchar(64)</data-type>
+      </column>
+      <index id="52" parent="5" name="PK__customer__3213E83F396D38E3">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -245,7 +251,7 @@ companyid</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <key id="52" parent="5" name="PK__customer__3213E83F396D38E3">
+      <key id="53" parent="5" name="PK__customer__3213E83F396D38E3">
         <name-surrogate>1</name-surrogate>
         <object-id>2101582525</object-id>
         <created-timestamp>2016-04-05.09:54:28.483</created-timestamp>
@@ -254,18 +260,18 @@ companyid</columns>
         <underlying-index>PK__customer__3213E83F396D38E3</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="53" parent="6" name="id">
+      <column id="54" parent="6" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
-      <column id="54" parent="6" name="customerType">
+      <column id="55" parent="6" name="customerType">
         <data-type>int</data-type>
       </column>
-      <column id="55" parent="6" name="info">
+      <column id="56" parent="6" name="info">
         <data-type>varchar(64)</data-type>
       </column>
-      <index id="56" parent="6" name="PK__customer__3213E83F01555DD7">
+      <index id="57" parent="6" name="PK__customer__3213E83F01555DD7">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -273,7 +279,7 @@ companyid</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <key id="57" parent="6" name="PK__customer__3213E83F01555DD7">
+      <key id="58" parent="6" name="PK__customer__3213E83F01555DD7">
         <name-surrogate>1</name-surrogate>
         <object-id>2117582582</object-id>
         <created-timestamp>2016-04-05.09:54:28.490</created-timestamp>
@@ -282,18 +288,18 @@ companyid</columns>
         <underlying-index>PK__customer__3213E83F01555DD7</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="58" parent="7" name="id">
+      <column id="59" parent="7" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
-      <column id="59" parent="7" name="depotName">
+      <column id="60" parent="7" name="depotName">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="60" parent="7" name="depotId">
+      <column id="61" parent="7" name="depotId">
         <data-type>int</data-type>
       </column>
-      <index id="61" parent="7" name="PK__depots__3213E83FC03C96CD">
+      <index id="62" parent="7" name="PK__depots__3213E83FC03C96CD">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -301,12 +307,12 @@ companyid</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <index id="62" parent="7" name="depotIdIndex">
-        <columns>depotid</columns>
+      <index id="63" parent="7" name="depotIdIndex">
+        <columns>depotId</columns>
         <desc-columns></desc-columns>
         <position>2</position>
       </index>
-      <key id="63" parent="7" name="PK__depots__3213E83FC03C96CD">
+      <key id="64" parent="7" name="PK__depots__3213E83FC03C96CD">
         <name-surrogate>1</name-surrogate>
         <object-id>2133582639</object-id>
         <created-timestamp>2016-04-05.09:54:28.493</created-timestamp>
@@ -315,17 +321,25 @@ companyid</columns>
         <underlying-index>PK__depots__3213E83FC03C96CD</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="64" parent="8" name="id">
+      <column id="65" parent="8" name="companyid">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <column id="65" parent="8" name="priceName">
-        <data-type>varchar(16)</data-type>
+      <column id="66" parent="8" name="partNoid">
+        <data-type>bigint</data-type>
       </column>
-      <column id="66" parent="8" name="priceShortcut">
-        <data-type>varchar(8)</data-type>
+      <column id="67" parent="8" name="partNo">
+        <data-type>varchar(32)</data-type>
       </column>
-      <index id="67" parent="8" name="PK__priceTyp__3213E83FDEBCB222">
+      <column id="68" parent="8" name="productid">
+        <data-type>int</data-type>
+      </column>
+      <column id="69" parent="8" name="id">
+        <mandatory>1</mandatory>
+        <data-type>bigint</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <index id="70" parent="8" name="PK__partNoIn__3213E83F360B1B1C">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -333,7 +347,34 @@ companyid</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <key id="68" parent="8" name="PK__priceTyp__3213E83FDEBCB222">
+      <key id="71" parent="8" name="PK__partNoIn__3213E83F360B1B1C">
+        <name-surrogate>1</name-surrogate>
+        <object-id>210099789</object-id>
+        <created-timestamp>2016-04-20.19:13:31.890</created-timestamp>
+        <modified-timestamp>2016-04-20.19:13:31.890</modified-timestamp>
+        <columns>id</columns>
+        <underlying-index>PK__partNoIn__3213E83F360B1B1C</underlying-index>
+        <primary>1</primary>
+      </key>
+      <column id="72" parent="9" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int</data-type>
+      </column>
+      <column id="73" parent="9" name="priceName">
+        <data-type>varchar(16)</data-type>
+      </column>
+      <column id="74" parent="9" name="priceShortcut">
+        <data-type>varchar(8)</data-type>
+      </column>
+      <index id="75" parent="9" name="PK__priceTyp__3213E83FDEBCB222">
+        <name-surrogate>1</name-surrogate>
+        <columns>id</columns>
+        <desc-columns></desc-columns>
+        <unique>1</unique>
+        <clustering>1</clustering>
+        <position>1</position>
+      </index>
+      <key id="76" parent="9" name="PK__priceTyp__3213E83FDEBCB222">
         <name-surrogate>1</name-surrogate>
         <object-id>1733581214</object-id>
         <created-timestamp>2016-03-29.10:53:45.340</created-timestamp>
@@ -342,58 +383,57 @@ companyid</columns>
         <underlying-index>PK__priceTyp__3213E83FDEBCB222</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="69" parent="9" name="id">
+      <column id="77" parent="10" name="id">
         <comment>Giriş ve Çıkışlar</comment>
         <mandatory>1</mandatory>
-        <data-type>int</data-type>
-        <sequence-identity>1(58)</sequence-identity>
+        <data-type>bigint</data-type>
+        <sequence-identity>1(296)</sequence-identity>
       </column>
-      <column id="70" parent="9" name="processType">
+      <column id="78" parent="10" name="processType">
         <mandatory>1</mandatory>
         <data-type>tinyint</data-type>
       </column>
-      <column id="71" parent="9" name="units">
+      <column id="79" parent="10" name="units">
         <mandatory>1</mandatory>
         <data-type>bigint</data-type>
       </column>
-      <column id="72" parent="9" name="description">
+      <column id="80" parent="10" name="description">
         <data-type>text</data-type>
       </column>
-      <column id="73" parent="9" name="unitsType">
+      <column id="81" parent="10" name="unitsType">
         <mandatory>1</mandatory>
         <data-type>tinyint</data-type>
       </column>
-      <column id="74" parent="9" name="partNo">
-        <mandatory>1</mandatory>
-        <data-type>int</data-type>
-      </column>
-      <column id="75" parent="9" name="actionDate">
-        <data-type>datetime</data-type>
-      </column>
-      <column id="76" parent="9" name="companyUserId">
-        <data-type>int</data-type>
-      </column>
-      <column id="77" parent="9" name="price">
+      <column id="82" parent="10" name="partNo">
         <data-type>bigint</data-type>
       </column>
-      <column id="78" parent="9" name="priceType">
+      <column id="83" parent="10" name="actionDate">
+        <data-type>datetime</data-type>
+      </column>
+      <column id="84" parent="10" name="companyUserId">
+        <data-type>int</data-type>
+      </column>
+      <column id="85" parent="10" name="price">
+        <data-type>bigint</data-type>
+      </column>
+      <column id="86" parent="10" name="priceType">
         <data-type>tinyint</data-type>
       </column>
-      <column id="79" parent="9" name="depotid">
+      <column id="87" parent="10" name="depotid">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <column id="80" parent="9" name="productid">
+      <column id="88" parent="10" name="productid">
         <data-type>int</data-type>
       </column>
-      <column id="81" parent="9" name="companyid">
+      <column id="89" parent="10" name="companyid">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <column id="82" parent="9" name="ownerid">
+      <column id="90" parent="10" name="ownerid">
         <data-type>int</data-type>
       </column>
-      <index id="83" parent="9" name="ProcessIndex">
+      <index id="91" parent="10" name="ProcessIndex">
         <columns>depotid
 processType
 companyid
@@ -402,40 +442,38 @@ actionDate</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <index id="84" parent="9" name="PK__process__3213E83E97EBE70A">
-        <name-surrogate>1</name-surrogate>
+      <index id="92" parent="10" name="PK__process__3213E83E97EBE70A">
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
         <position>2</position>
       </index>
-      <key id="85" parent="9" name="PK__process__3213E83E97EBE70A">
-        <name-surrogate>1</name-surrogate>
-        <object-id>2099048</object-id>
-        <created-timestamp>2016-04-05.09:54:28.503</created-timestamp>
-        <modified-timestamp>2016-04-05.09:54:28.503</modified-timestamp>
+      <key id="93" parent="10" name="PK__process__3213E83E97EBE70A">
+        <object-id>66099276</object-id>
+        <created-timestamp>2016-04-18.17:38:48.353</created-timestamp>
+        <modified-timestamp>2016-04-18.17:38:48.353</modified-timestamp>
         <columns>id</columns>
         <underlying-index>PK__process__3213E83E97EBE70A</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="86" parent="10" name="id">
+      <column id="94" parent="11" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
         <sequence-identity>1(9)</sequence-identity>
       </column>
-      <column id="87" parent="10" name="productName">
+      <column id="95" parent="11" name="productName">
         <data-type>varchar(64)</data-type>
       </column>
-      <column id="88" parent="10" name="unitType">
+      <column id="96" parent="11" name="unitType">
         <data-type>tinyint</data-type>
       </column>
-      <column id="89" parent="10" name="description">
+      <column id="97" parent="11" name="description">
         <data-type>text</data-type>
       </column>
-      <column id="90" parent="10" name="avgWeight">
+      <column id="98" parent="11" name="avgWeight">
         <data-type>float</data-type>
       </column>
-      <index id="91" parent="10" name="PK__products__3213E83F6EAEEBAB">
+      <index id="99" parent="11" name="PK__products__3213E83F6EAEEBAB">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -443,12 +481,12 @@ actionDate</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <index id="92" parent="10" name="productIndex">
+      <index id="100" parent="11" name="productIndex">
         <columns>productName</columns>
         <desc-columns></desc-columns>
         <position>2</position>
       </index>
-      <key id="93" parent="10" name="PK__products__3213E83F6EAEEBAB">
+      <key id="101" parent="11" name="PK__products__3213E83F6EAEEBAB">
         <name-surrogate>1</name-surrogate>
         <object-id>18099105</object-id>
         <created-timestamp>2016-04-05.09:54:28.527</created-timestamp>
@@ -457,36 +495,36 @@ actionDate</columns>
         <underlying-index>PK__products__3213E83F6EAEEBAB</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="94" parent="11" name="units">
+      <column id="102" parent="12" name="units">
         <data-type>bigint</data-type>
       </column>
-      <column id="95" parent="11" name="partiNo">
+      <column id="103" parent="12" name="partiNo">
         <data-type>bigint</data-type>
       </column>
-      <column id="96" parent="11" name="dateAdded">
+      <column id="104" parent="12" name="dateAdded">
         <data-type>datetime</data-type>
       </column>
-      <column id="97" parent="11" name="unitType">
+      <column id="105" parent="12" name="unitType">
         <data-type>tinyint</data-type>
       </column>
-      <column id="98" parent="11" name="id">
+      <column id="106" parent="12" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
-      <column id="99" parent="11" name="companyid">
+      <column id="107" parent="12" name="companyid">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <column id="100" parent="11" name="depotid">
+      <column id="108" parent="12" name="depotid">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <column id="101" parent="11" name="productid">
+      <column id="109" parent="12" name="productid">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <index id="102" parent="11" name="TotalProductsIndex">
+      <index id="110" parent="12" name="TotalProductsIndex">
         <columns>companyid
 depotid
 productid</columns>
@@ -494,26 +532,26 @@ productid</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <index id="103" parent="11" name="TotalProductsIndex2">
+      <index id="111" parent="12" name="TotalProductsIndex2">
         <columns>companyid
 dateAdded</columns>
         <desc-columns>dateAdded</desc-columns>
         <position>2</position>
       </index>
-      <index id="104" parent="11" name="TotalProductsIndex3">
+      <index id="112" parent="12" name="TotalProductsIndex3">
         <columns>companyid
 partiNo</columns>
         <desc-columns></desc-columns>
         <position>3</position>
       </index>
-      <index id="105" parent="11" name="PK__totalPro__3213E83E2063C959">
+      <index id="113" parent="12" name="PK__totalPro__3213E83E2063C959">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
         <unique>1</unique>
         <position>4</position>
       </index>
-      <key id="106" parent="11" name="PK__totalPro__3213E83E2063C959">
+      <key id="114" parent="12" name="PK__totalPro__3213E83E2063C959">
         <name-surrogate>1</name-surrogate>
         <object-id>34099162</object-id>
         <created-timestamp>2016-04-05.09:54:28.540</created-timestamp>
@@ -522,22 +560,22 @@ partiNo</columns>
         <underlying-index>PK__totalPro__3213E83E2063C959</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="107" parent="12" name="units">
+      <column id="115" parent="13" name="companyid">
+        <mandatory>1</mandatory>
+        <data-type>int</data-type>
+      </column>
+      <column id="116" parent="13" name="units">
         <data-type>bigint</data-type>
       </column>
-      <column id="108" parent="12" name="unitsType">
-        <data-type>int</data-type>
+      <column id="117" parent="13" name="unitsType">
+        <data-type>tinyint</data-type>
       </column>
-      <column id="109" parent="12" name="id">
+      <column id="118" parent="13" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
-        <sequence-identity>1</sequence-identity>
+        <sequence-identity>1(3)</sequence-identity>
       </column>
-      <column id="110" parent="12" name="companyid">
-        <mandatory>1</mandatory>
-        <data-type>int</data-type>
-      </column>
-      <index id="111" parent="12" name="PK__totalUni__3213E83F231EE148">
+      <index id="119" parent="13" name="PK__totalUni__3213E83F5E8FDEB8">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -545,28 +583,28 @@ partiNo</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <index id="112" parent="12" name="TotalBoxCompanyIndex">
-        <columns>companyid</columns>
+      <index id="120" parent="13" name="unitsTypes">
+        <columns>units</columns>
         <desc-columns></desc-columns>
         <position>2</position>
       </index>
-      <key id="113" parent="12" name="PK__totalUni__3213E83F231EE148">
+      <key id="121" parent="13" name="PK__totalUni__3213E83F5E8FDEB8">
         <name-surrogate>1</name-surrogate>
-        <object-id>50099219</object-id>
-        <created-timestamp>2016-04-05.09:54:28.547</created-timestamp>
-        <modified-timestamp>2016-04-05.09:54:28.547</modified-timestamp>
+        <object-id>98099390</object-id>
+        <created-timestamp>2016-04-19.15:39:21.600</created-timestamp>
+        <modified-timestamp>2016-04-19.15:39:21.600</modified-timestamp>
         <columns>id</columns>
-        <underlying-index>PK__totalUni__3213E83F231EE148</underlying-index>
+        <underlying-index>PK__totalUni__3213E83F5E8FDEB8</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="114" parent="13" name="id">
+      <column id="122" parent="14" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <column id="115" parent="13" name="transferType">
+      <column id="123" parent="14" name="transferType">
         <data-type>varchar(32)</data-type>
       </column>
-      <index id="116" parent="13" name="PK__transfer__3213E83F684DA9FF">
+      <index id="124" parent="14" name="PK__transfer__3213E83F684DA9FF">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -574,7 +612,7 @@ partiNo</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <key id="117" parent="13" name="PK__transfer__3213E83F684DA9FF">
+      <key id="125" parent="14" name="PK__transfer__3213E83F684DA9FF">
         <name-surrogate>1</name-surrogate>
         <object-id>1765581328</object-id>
         <created-timestamp>2016-03-29.10:54:34.360</created-timestamp>
@@ -583,14 +621,14 @@ partiNo</columns>
         <underlying-index>PK__transfer__3213E83F684DA9FF</underlying-index>
         <primary>1</primary>
       </key>
-      <column id="118" parent="14" name="id">
+      <column id="126" parent="15" name="id">
         <mandatory>1</mandatory>
         <data-type>int</data-type>
       </column>
-      <column id="119" parent="14" name="unitName">
+      <column id="127" parent="15" name="unitName">
         <data-type>varchar(255)</data-type>
       </column>
-      <index id="120" parent="14" name="PK__units__3213E83FB2813417">
+      <index id="128" parent="15" name="PK__units__3213E83FB2813417">
         <name-surrogate>1</name-surrogate>
         <columns>id</columns>
         <desc-columns></desc-columns>
@@ -598,7 +636,7 @@ partiNo</columns>
         <clustering>1</clustering>
         <position>1</position>
       </index>
-      <key id="121" parent="14" name="PK__units__3213E83FB2813417">
+      <key id="129" parent="15" name="PK__units__3213E83FB2813417">
         <name-surrogate>1</name-surrogate>
         <object-id>1701581100</object-id>
         <created-timestamp>2016-03-29.10:50:57.510</created-timestamp>
@@ -607,147 +645,159 @@ partiNo</columns>
         <underlying-index>PK__units__3213E83FB2813417</underlying-index>
         <primary>1</primary>
       </key>
-      <argument id="122" parent="15" name="@Name">
+      <argument id="130" parent="16" name="@Name">
         <direction>IN</direction>
         <data-type>varchar(64)</data-type>
       </argument>
-      <argument id="123" parent="15" name="@SurName">
+      <argument id="131" parent="16" name="@SurName">
         <direction>IN</direction>
         <data-type>varchar(64)</data-type>
       </argument>
-      <argument id="124" parent="15" name="@Unvan">
+      <argument id="132" parent="16" name="@Unvan">
         <direction>IN</direction>
         <data-type>varchar(64)</data-type>
       </argument>
-      <argument id="125" parent="15" name="@Type">
+      <argument id="133" parent="16" name="@Type">
         <direction>IN</direction>
         <data-type>tinyint</data-type>
       </argument>
-      <argument id="126" parent="15" name="@PhoneNumber">
+      <argument id="134" parent="16" name="@PhoneNumber">
         <direction>IN</direction>
         <data-type>varchar(32)</data-type>
       </argument>
-      <argument id="127" parent="15" name="@Address">
+      <argument id="135" parent="16" name="@Address">
         <direction>IN</direction>
         <data-type>varchar(255)</data-type>
       </argument>
-      <argument id="128" parent="15" name="@TcKimlik">
+      <argument id="136" parent="16" name="@TcKimlik">
         <direction>IN</direction>
         <data-type>bigint</data-type>
       </argument>
-      <argument id="129" parent="15" name="@VergiKimlik">
+      <argument id="137" parent="16" name="@VergiKimlik">
         <direction>IN</direction>
         <data-type>bigint</data-type>
       </argument>
-      <argument id="130" parent="15" name="@Success">
+      <argument id="138" parent="16" name="@Success">
         <direction>OUT</direction>
         <data-type>int</data-type>
       </argument>
-      <argument id="131" parent="16" name="@CompanyId">
+      <argument id="139" parent="16" name="@Title">
+        <direction>IN</direction>
+        <data-type>varchar(64)</data-type>
+      </argument>
+      <argument id="140" parent="17" name="@CompanyId">
         <direction>IN</direction>
         <data-type>int</data-type>
       </argument>
-      <argument id="132" parent="16" name="@DepotId">
+      <argument id="141" parent="17" name="@ProductId">
         <direction>IN</direction>
         <data-type>int</data-type>
       </argument>
-      <argument id="133" parent="16" name="@ProductId">
+      <argument id="142" parent="17" name="@DepotId">
         <direction>IN</direction>
         <data-type>int</data-type>
       </argument>
-      <argument id="134" parent="16" name="@Units">
+      <argument id="143" parent="17" name="@Units">
         <direction>IN</direction>
         <data-type>bigint</data-type>
       </argument>
-      <argument id="135" parent="16" name="@UnitsType">
+      <argument id="144" parent="17" name="@UnitsType">
         <direction>IN</direction>
         <data-type>tinyint</data-type>
       </argument>
-      <argument id="136" parent="16" name="@Price">
+      <argument id="145" parent="17" name="@Price">
         <direction>IN</direction>
         <data-type>bigint</data-type>
       </argument>
-      <argument id="137" parent="16" name="@PriceType">
+      <argument id="146" parent="17" name="@PriceType">
         <direction>IN</direction>
         <data-type>tinyint</data-type>
       </argument>
-      <argument id="138" parent="16" name="@PartNo">
+      <argument id="147" parent="17" name="@PartNo">
         <direction>IN</direction>
-        <data-type>int</data-type>
+        <data-type>bigint</data-type>
       </argument>
-      <argument id="139" parent="16" name="@Description">
+      <argument id="148" parent="17" name="@Description">
         <direction>IN</direction>
         <data-type>text</data-type>
       </argument>
-      <argument id="140" parent="16" name="@CompanyUserId">
+      <argument id="149" parent="17" name="@CompanyUserId">
         <direction>IN</direction>
         <data-type>int</data-type>
       </argument>
-      <argument id="141" parent="16" name="@Success">
+      <argument id="150" parent="17" name="@Success">
         <direction>OUT</direction>
         <data-type>int</data-type>
       </argument>
-      <argument id="142" parent="16" name="@Exception">
-        <direction>OUT</direction>
-        <data-type>varchar(255)</data-type>
-      </argument>
-      <argument id="143" parent="17" name="@CompanyId">
-        <direction>IN</direction>
-        <data-type>int</data-type>
-      </argument>
-      <argument id="144" parent="17" name="@ProductId">
-        <direction>IN</direction>
-        <data-type>int</data-type>
-      </argument>
-      <argument id="145" parent="17" name="@DepotId">
-        <direction>IN</direction>
-        <data-type>int</data-type>
-      </argument>
-      <argument id="146" parent="17" name="@Units">
-        <direction>IN</direction>
-        <data-type>bigint</data-type>
-      </argument>
-      <argument id="147" parent="17" name="@UnitsType">
-        <direction>IN</direction>
-        <data-type>tinyint</data-type>
-      </argument>
-      <argument id="148" parent="17" name="@Price">
-        <direction>IN</direction>
-        <data-type>bigint</data-type>
-      </argument>
-      <argument id="149" parent="17" name="@PriceType">
-        <direction>IN</direction>
-        <data-type>tinyint</data-type>
-      </argument>
-      <argument id="150" parent="17" name="@PartNo">
-        <direction>IN</direction>
-        <data-type>int</data-type>
-      </argument>
-      <argument id="151" parent="17" name="@Description">
-        <direction>IN</direction>
-        <data-type>text</data-type>
-      </argument>
-      <argument id="152" parent="17" name="@CompanyUserId">
-        <direction>IN</direction>
-        <data-type>int</data-type>
-      </argument>
-      <argument id="153" parent="17" name="@Success">
-        <direction>OUT</direction>
-        <data-type>int</data-type>
-      </argument>
-      <argument id="154" parent="17" name="@Exception">
+      <argument id="151" parent="17" name="@Exception">
         <direction>OUT</direction>
         <data-type>sysname</data-type>
       </argument>
-      <argument id="155" parent="18">
+      <argument id="152" parent="17" name="@ProcessOut">
+        <direction>OUT</direction>
+        <data-type>bigint</data-type>
+      </argument>
+      <argument id="153" parent="18" name="@CompanyId">
+        <direction>IN</direction>
+        <data-type>int</data-type>
+      </argument>
+      <argument id="154" parent="18" name="@DepotId">
+        <direction>IN</direction>
+        <data-type>int</data-type>
+      </argument>
+      <argument id="155" parent="18" name="@ProductId">
+        <direction>IN</direction>
+        <data-type>int</data-type>
+      </argument>
+      <argument id="156" parent="18" name="@Units">
+        <direction>IN</direction>
+        <data-type>bigint</data-type>
+      </argument>
+      <argument id="157" parent="18" name="@UnitsType">
+        <direction>IN</direction>
+        <data-type>tinyint</data-type>
+      </argument>
+      <argument id="158" parent="18" name="@Price">
+        <direction>IN</direction>
+        <data-type>bigint</data-type>
+      </argument>
+      <argument id="159" parent="18" name="@PriceType">
+        <direction>IN</direction>
+        <data-type>tinyint</data-type>
+      </argument>
+      <argument id="160" parent="18" name="@PartNo">
+        <direction>IN</direction>
+        <data-type>bigint</data-type>
+      </argument>
+      <argument id="161" parent="18" name="@Description">
+        <direction>IN</direction>
+        <data-type>text</data-type>
+      </argument>
+      <argument id="162" parent="18" name="@CompanyUserId">
+        <direction>IN</direction>
+        <data-type>int</data-type>
+      </argument>
+      <argument id="163" parent="18" name="@Success">
+        <direction>OUT</direction>
+        <data-type>int</data-type>
+      </argument>
+      <argument id="164" parent="18" name="@Exception">
+        <direction>OUT</direction>
+        <data-type>varchar(255)</data-type>
+      </argument>
+      <argument id="165" parent="18" name="@ProcessOut">
+        <direction>OUT</direction>
+        <data-type>bigint</data-type>
+      </argument>
+      <argument id="166" parent="19">
         <direction>RETURN</direction>
         <data-type>nvarchar(4)</data-type>
       </argument>
-      <argument id="156" parent="18">
+      <argument id="167" parent="19">
         <direction>RETURN</direction>
         <data-type>sysname</data-type>
       </argument>
-      <argument id="157" parent="18" name="@txt">
+      <argument id="168" parent="19" name="@txt">
         <direction>IN</direction>
         <data-type>sysname</data-type>
       </argument>

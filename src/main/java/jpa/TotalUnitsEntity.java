@@ -31,7 +31,7 @@ public class TotalUnitsEntity {
     }
 
     @Basic
-    @Column(name = "totalUnit", nullable = false)
+    @Column(name = "units", nullable = false)
     public Long getTotalBox() {
         return totalBox;
     }
@@ -40,7 +40,8 @@ public class TotalUnitsEntity {
         this.totalBox = totalBox;
     }
 
-
+    @Basic
+    @Column(name = "unitsType")
     public Byte getUnitType() {
         return unitType;
     }

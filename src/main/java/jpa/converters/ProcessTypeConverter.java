@@ -13,7 +13,7 @@ public class ProcessTypeConverter implements AttributeConverter<ProcessType, Int
 
     @Override
     public Integer convertToDatabaseColumn(ProcessType processType) {
-        return processType.getValue();
+        return ProcessType.toInteger(processType);
     }
 
     @Override

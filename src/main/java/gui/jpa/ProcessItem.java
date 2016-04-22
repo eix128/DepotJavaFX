@@ -1,54 +1,130 @@
 package gui.jpa;
 
+import com.google.inject.Inject;
 import javafx.beans.property.SimpleLongProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+import jpa.*;
+import jpa.converters.enums.PriceType;
+import jpa.converters.enums.ProcessType;
+import language.LangUtils;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by Kadir on 4/3/2016.
  */
-public class ProcessItem implements Comparable<Integer> {
-    private SimpleLongProperty   id;
-    private SimpleStringProperty depot;
-    private SimpleStringProperty product;
-    private SimpleStringProperty company;
-    private SimpleStringProperty owner;
-    private SimpleStringProperty companyUserId;
-    private SimpleStringProperty processType;
-    private SimpleStringProperty priceType;
-    private SimpleStringProperty units;
-    private SimpleStringProperty partNo;
-    private SimpleStringProperty price;
-    private SimpleStringProperty actionDate;
-    private SimpleStringProperty actionTime;
-    private SimpleStringProperty description;
+public class ProcessItem implements Serializable,Comparable<ProcessItem> {
 
-    private Integer        index;
+    private SimpleLongProperty                      id;
+
+    private SimpleStringProperty                    depot;
+    private SimpleStringProperty                    product;
+    private SimpleStringProperty                    company;
+    private SimpleStringProperty                    owner;
+    private SimpleStringProperty                    companyUserId;
+
+    private SimpleObjectProperty<ProcessType>       processType;
+    private SimpleObjectProperty<PriceType>         priceType;
+
+    private SimpleLongProperty                      units;
+    private SimpleLongProperty                      partNo;
+    private SimpleLongProperty                      price;
+
+    private SimpleObjectProperty<LocalDate>         actionDate;
+
+    private SimpleObjectProperty<LocalTime>         actionTime;
+    private SimpleStringProperty                    description;
+
+    private Integer                                 index;
 
 
-    public ProcessItem(int index) {
+    private LangUtils langUtils;
+
+
+    @Inject
+    public ProcessItem(LangUtils langUtils) {
         id = new SimpleLongProperty();
-
+        id.set(-1);
+        this.langUtils = langUtils;
         depot = new SimpleStringProperty();
         product = new SimpleStringProperty();
         company = new SimpleStringProperty();
         owner = new SimpleStringProperty();
         companyUserId = new SimpleStringProperty();
-        processType = new SimpleStringProperty();
+        processType = new SimpleObjectProperty<ProcessType>();
 //        unitType = new SimpleStringProperty();
-        priceType = new SimpleStringProperty();
-        units = new SimpleStringProperty();
-        partNo = new SimpleStringProperty();
-        price = new SimpleStringProperty();
-        actionDate = new SimpleStringProperty();
-        description = new SimpleStringProperty();
-        actionTime = new SimpleStringProperty();
-        index = new Integer(  index );
+        priceType = new SimpleObjectProperty<PriceType>();
+        units = new SimpleLongProperty();
+        partNo = new SimpleLongProperty( );
+        price = new SimpleLongProperty( );
+//        final LangUtils langUtils = GlobalDatas.getInstance().getInjector().getInstance(LangUtils.class);
+        actionDate = new SimpleObjectProperty<LocalDate>( ) {
+            @Override
+            public String toString() {
+                final LocalDate value = actionDate.getValue();
+                return value.getDayOfMonth() + "/" + langUtils.getMonthByIndex( value.getMonthValue() - 1 ) + "/" + value.getYear();
+            }
+        };
+        description = new SimpleStringProperty( );
+        actionTime = new SimpleObjectProperty<LocalTime>( ) {
+            @Override
+            public String toString() {
+                final LocalTime value = actionTime.getValue();
+                String time = value.getHour() + ":" + value.getMinute();
+                return time;
+            }
+        };
+        this.index = new Integer(  0  );
+    }
+
+    @Inject
+    public final void init() {
 
     }
 
-    public Long getId() {
+
+    public static final ProcessItem from( LangUtils langUtils , ProcessEntity processEntity) {
+        ProcessItem processItem = new ProcessItem( langUtils );
+//                                processItem.setId(processItem.getId());
+        ConcurrentHashMap<Integer, String> depotsMap = DepotsEntity.getDepotsMap();
+        ConcurrentHashMap<Integer, CustomerEntity> customersMap = CustomerEntity.getCustomerById();
+        ConcurrentHashMap<Integer, String> companyUsersMap = CompanyUsersEntity.getCompanyUsersMap();
+        ConcurrentHashMap<Integer, String> productsMap = ProductsEntity.getProductsMap();
+
+        processItem.setDepot(depotsMap.get(processEntity.getDepotId()));
+
+        Date actionDate = processEntity.getActionDate();
+        final ZonedDateTime zonedDateTime = actionDate.toInstant().atZone(ZoneId.systemDefault());
+
+        processItem.setActionDate( zonedDateTime.toLocalDate() );
+        CustomerEntity s1 = customersMap.get(processEntity.getCompanyId());
+        processItem.setCompany(s1.getTitle());
+        processItem.setDescription(processEntity.getDescription());
+        processItem.setPartNo(processEntity.getPartNo());
+        processItem.setPrice(processEntity.getPrice());
+        String s = productsMap.get(processEntity.getProductId());
+        processItem.setProduct( s );
+        processItem.setCompanyUserId(companyUsersMap.get(processEntity.getCompanyUserId()));
+        processItem.setUnits(processEntity.getUnits());
+        processItem.setPrice(processEntity.getPrice());
+        processItem.setDescription(String.valueOf(processEntity.getDescription()));
+        processItem.setIndex(processEntity.getIndex());
+        processItem.setProcessType(processEntity.getProcessType());
+        processItem.setActionTime( zonedDateTime.toLocalTime() );
+        processItem.setId( processEntity.getId() );
+
+        return processItem;
+    }
+
+
+    public long getId() {
         return id.get();
     }
 
@@ -56,7 +132,7 @@ public class ProcessItem implements Comparable<Integer> {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id.set(id);
     }
 
@@ -120,88 +196,88 @@ public class ProcessItem implements Comparable<Integer> {
         this.companyUserId.set(companyUserId);
     }
 
-    public String getProcessType() {
+    public ProcessType getProcessType() {
         return processType.get();
     }
 
-    public SimpleStringProperty processTypeProperty() {
+    public SimpleObjectProperty<ProcessType> processTypeProperty() {
         return processType;
     }
 
-    public void setProcessType(String processType) {
+    public void setProcessType(ProcessType processType) {
         this.processType.set(processType);
     }
 
-//    public String getUnitType() {
-//        return unitType.get();
-//    }
-//
-//    public SimpleStringProperty unitTypeProperty() {
-//        return unitType;
-//    }
-//
-//    public void setUnitType(String unitType) {
-//        this.unitType.set(unitType);
-//    }
-
-    public String getPriceType() {
+    public PriceType getPriceType() {
         return priceType.get();
     }
 
-    public SimpleStringProperty priceTypeProperty() {
+    public SimpleObjectProperty<PriceType> priceTypeProperty() {
         return priceType;
     }
 
-    public void setPriceType(String priceType) {
+    public void setPriceType(PriceType priceType) {
         this.priceType.set(priceType);
     }
 
-    public String getUnits() {
+    public long getUnits() {
         return units.get();
     }
 
-    public SimpleStringProperty unitsProperty() {
+    public SimpleLongProperty unitsProperty() {
         return units;
     }
 
-    public void setUnits(String units) {
+    public void setUnits(long units) {
         this.units.set(units);
     }
 
-    public String getPartNo() {
+    public long getPartNo() {
         return partNo.get();
     }
 
-    public SimpleStringProperty partNoProperty() {
+    public SimpleLongProperty partNoProperty() {
         return partNo;
     }
 
-    public void setPartNo(String partNo) {
+    public void setPartNo(long partNo) {
         this.partNo.set(partNo);
     }
 
-    public String getPrice() {
+    public long getPrice() {
         return price.get();
     }
 
-    public SimpleStringProperty priceProperty() {
+    public SimpleLongProperty priceProperty() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(long price) {
         this.price.set(price);
     }
 
-    public String getActionDate() {
+    public LocalDate getActionDate() {
         return actionDate.get();
     }
 
-    public SimpleStringProperty actionDateProperty() {
+    public SimpleObjectProperty<LocalDate> actionDateProperty() {
         return actionDate;
     }
 
-    public void setActionDate(String actionDate) {
+    public void setActionDate(LocalDate actionDate) {
         this.actionDate.set(actionDate);
+    }
+
+    public LocalTime getActionTime() {
+        return actionTime.get();
+    }
+
+    public SimpleObjectProperty<LocalTime> actionTimeProperty() {
+        return actionTime;
+    }
+
+    public void setActionTime(LocalTime actionTime) {
+        this.actionTime.set(actionTime);
     }
 
     public String getDescription() {
@@ -216,29 +292,39 @@ public class ProcessItem implements Comparable<Integer> {
         this.description.set(description);
     }
 
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
-    public void setIndex(int index) {
+    public void setIndex(Integer index) {
         this.index = index;
     }
 
-
-    public String getActionTime() {
-        return actionTime.get();
+    @Override
+    public int compareTo(ProcessItem o) {
+        return getIndex().compareTo(o.getIndex());
     }
 
-    public SimpleStringProperty actionTimeProperty() {
-        return actionTime;
-    }
-
-    public void setActionTime(String actionTime) {
-        this.actionTime.set(actionTime);
-    }
 
     @Override
-    public int compareTo(Integer o) {
-        return index.compareTo(o);
+    public String toString() {
+        return "ProcessItem{" +
+                "id=" + id +
+                ", depot=" + depot +
+                ", product=" + product +
+                ", company=" + company +
+                ", owner=" + owner +
+                ", companyUserId=" + companyUserId +
+                ", processType=" + processType +
+                ", priceType=" + priceType +
+                ", units=" + units +
+                ", partNo=" + partNo +
+                ", price=" + price +
+                ", actionDate=" + actionDate +
+                ", actionTime=" + actionTime +
+                ", description=" + description +
+                ", index=" + index +
+                ", langUtils=" + langUtils +
+                '}';
     }
 }

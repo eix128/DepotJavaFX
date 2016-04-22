@@ -11,11 +11,15 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import jpa.*;
-import jpa.converters.enums.ProcessType;
+import language.LangUtils;
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,7 +31,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -40,9 +43,11 @@ public class DynamicJPA implements ObservableList {
     private EntityManager entityManager;
     private LoadingCache<Integer, ProcessItem> cache;
     private Supplier<Long> cacheSize;
+    private LangUtils langUtils;
 
 
-    public DynamicJPA(EntityManager entityManager) {
+    public DynamicJPA(LangUtils langUtils, EntityManager entityManager) {
+        this.langUtils = langUtils;
         changeListener = new ArrayList<ListChangeListener>();
         this.entityManager = entityManager;
 //        entityManager.createNamedQuery("select.between", CityEntity.class);
@@ -82,8 +87,9 @@ public class DynamicJPA implements ObservableList {
                 .build(new CacheLoader<Integer, ProcessItem>() {
                     @Override
                     public ProcessItem load(Integer tableIndex) throws Exception {
-                        int max = Math.max(0, tableIndex - 128);
-                        final TypedQuery<ProcessEntity> cityEntityTypedQuery = allQuery.setFirstResult(max).setMaxResults(256);
+                        int max = Math.max(0, tableIndex - 1024);
+                        allQuery.setHint( QueryHints.REFRESH, HintValues.TRUE );
+                        final TypedQuery<ProcessEntity> cityEntityTypedQuery = allQuery.setFirstResult(max).setMaxResults(1024);
 //                        final String queryString = allQuery.unwrap(Query.class).getQueryString();
                         final List<ProcessEntity> resultList =  cityEntityTypedQuery.getResultList();
                         int counter = 0;
@@ -101,44 +107,48 @@ public class DynamicJPA implements ObservableList {
 
 
                         ConcurrentHashMap<Integer, String> depotsMap = DepotsEntity.getDepotsMap();
-                        ConcurrentHashMap<Integer, String> customersMap = CustomerEntity.getCustomersMap();
+                        ConcurrentHashMap<Integer, CustomerEntity> customersMap = CustomerEntity.getCustomerById();
                         ConcurrentHashMap<Integer, String> companyUsersMap = CompanyUsersEntity.getCompanyUsersMap();
                         ConcurrentHashMap<Integer, String> productsMap = ProductsEntity.getProductsMap();
                         List<ProcessItem> collect = resultList.parallelStream().map(new Function<ProcessEntity, ProcessItem>() {
                             @Override
                             public ProcessItem apply(ProcessEntity processEntity) {
-                                ProcessItem processItem = new ProcessItem( 0 );
+                                ProcessItem processItem = new ProcessItem( langUtils );
+//                                GlobalDatas.getInstance().getInjector().getInstance(ProcessItem.class);
 //                                processItem.setId(processItem.getId());
 
                                 processItem.setDepot(depotsMap.get(processEntity.getDepotId()));
 
                                 Date actionDate = processEntity.getActionDate();
-                                Calendar instance = Calendar.getInstance();
-                                instance.setTime(actionDate);
-                                processItem.setActionDate(instance.get(Calendar.DAY_OF_MONTH) + "/" + (instance.get(Calendar.MONTH) + 1) + "/" + instance.get(Calendar.YEAR));
-                                String s1 = customersMap.get(processEntity.getCompanyId());
-                                processItem.setCompany(s1);
+                                final ZonedDateTime zonedDateTime = actionDate.toInstant().atZone(ZoneId.systemDefault());
+
+                                processItem.setActionDate( zonedDateTime.toLocalDate() );
+                                CustomerEntity s1 = customersMap.get(processEntity.getCompanyId());
+                                processItem.setCompany(s1.getTitle());
                                 processItem.setDescription(processEntity.getDescription());
-                                processItem.setPartNo(String.valueOf(processEntity.getPartNo()));
-                                processItem.setPrice("" + processEntity.getPrice());
+                                processItem.setPartNo(processEntity.getPartNo());
+                                processItem.setPrice(processEntity.getPrice());
                                 String s = productsMap.get(processEntity.getProductId());
                                 processItem.setProduct( s );
                                 processItem.setCompanyUserId(companyUsersMap.get(processEntity.getCompanyUserId()));
-                                processItem.setUnits(String.valueOf(processEntity.getUnits()));
-                                processItem.setPrice(String.valueOf(processEntity.getPrice()));
+                                processItem.setUnits(processEntity.getUnits());
+                                processItem.setPrice(processEntity.getPrice());
                                 processItem.setDescription(String.valueOf(processEntity.getDescription()));
                                 processItem.setIndex(processEntity.getIndex());
-                                processItem.setProcessType(ProcessType.INPUT.getValue() == processEntity.getProcessType()?"GİRİŞ" : "ÇIKIŞ");
-                                processItem.setActionTime( instance.get(Calendar.HOUR_OF_DAY ) + ":"+ instance.get(Calendar.MINUTE ));
+                                processItem.setProcessType(processEntity.getProcessType());
+                                processItem.setActionTime( zonedDateTime.toLocalTime() );
                                 return processItem;
                             }
                         }).collect(Collectors.toList());
 
-                        ProcessItem processItem1 = collect.get(tableIndex);
-                        if(processItem1 == null)
-                            processItem1 = new ProcessItem( 0 );
-                        //System.out.println(tableIndex);
-                        return processItem1;
+                        collect.parallelStream().forEach(processItem22 -> {
+                            cache.asMap().put(processItem22.getIndex(),processItem22);
+                        });
+                        final ProcessItem processItem3 = cache.asMap().get(tableIndex);
+                        if(processItem3 != null)
+                            return processItem3;
+                        else
+                            return null;
                     } // build the cacheloader
                 });
 
@@ -281,7 +291,7 @@ public class DynamicJPA implements ObservableList {
 
     @Override
     public void clear() {
-
+        cache.cleanUp();
     }
 
     @Override
@@ -298,6 +308,8 @@ public class DynamicJPA implements ObservableList {
     public Object get(int index) {
         try {
             ProcessItem processEntity = cache.get(index);
+            if(processEntity == null)
+                return new ProcessItem( langUtils );
 //            System.out.println(city);
             return processEntity;
         } catch (ExecutionException e) {

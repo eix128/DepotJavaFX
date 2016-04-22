@@ -4,8 +4,12 @@ import com.google.common.base.Supplier;
 import com.google.inject.Injector;
 import globals.GlobalDatas;
 import globals.interfaces.PostInit;
+import javafx.application.Platform;
+import javafx.scene.control.ComboBox;
+import jpa.converters.enums.ProcessType;
 import jpa.utils.JPAUtils;
 import kernel.network.DBManager;
+import main.gui.ComboList;
 import utils.guava.LazyCache;
 
 import javax.persistence.*;
@@ -18,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Entity
 @Table(name = "companyUsers", schema = "dbo", catalog = "jdepo")
-public class CompanyUsersEntity {
+public class CompanyUsersEntity implements SettableString {
 
     private static LazyCache<List<CompanyUsersEntity>> companyUsers;
 
@@ -26,15 +30,16 @@ public class CompanyUsersEntity {
     private String userSurname;
 
     @Id
+    @Column(name = "id")
     private int     id;
 
-    @Column
+    @Column(name = "tcIdentityNo")
     private Long tcIdentityNo;
 
-    @Column(length = 64)
+    @Column(name = "userEmail",length = 64)
     private String userEmail;
 
-    @Column(length = 64)
+    @Column(name = "userPhone",length = 64)
     private String userPhone;
 
     @Column(name = "status")
@@ -45,6 +50,7 @@ public class CompanyUsersEntity {
 
 
     private static final ConcurrentHashMap<Integer,String> companyUsersMap = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String,CompanyUsersEntity> companyUsersByName = new ConcurrentHashMap<>();
 
     public static ConcurrentHashMap<Integer, String> getCompanyUsersMap() {
         return companyUsersMap;
@@ -62,14 +68,19 @@ public class CompanyUsersEntity {
 
     }
 
+
+    public static ConcurrentHashMap<String, CompanyUsersEntity> getCompanyUsersByName() {
+        return companyUsersByName;
+    }
+
     @PostInit
     public static final void init() {
-        System.out.println("Deneme 1 2 3");
         TypedQuery<CompanyUsersEntity> allData = JPAUtils.getAllData(CompanyUsersEntity.class);
         List<CompanyUsersEntity> resultList = allData.getResultList();
         companyUsersMap.clear();
         for (CompanyUsersEntity companyUsersEntity : resultList) {
             companyUsersMap.put(companyUsersEntity.getId(),companyUsersEntity.getUserName() + companyUsersEntity.getUserSurname() );
+            companyUsersByName.put(companyUsersEntity.getUserName() + ' ' + companyUsersEntity.getUserSurname(),companyUsersEntity.getValue());
         }
     }
 
@@ -205,4 +216,27 @@ public class CompanyUsersEntity {
     public void setCompanyId(Integer companyId) {
         this.companyId = companyId;
     }
+
+    @Override
+    public void setString(String data) {
+        ComboList instance1 = GlobalDatas.getInstance().getInjector().getInstance(ComboList.class);
+
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                instance1.getByName("Main.transactionType").setValue(this);
+            }
+        });
+    }
+
+    @Override
+    public String getString() {
+        return userName + ' ' + userSurname;
+    }
+
+    @Override
+    public CompanyUsersEntity getValue() {
+        return CompanyUsersEntity.this;
+    }
+
 }

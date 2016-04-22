@@ -1,9 +1,7 @@
 package kernel.actors;
 
-import com.google.common.util.concurrent.ListenableFuture;
-import javafx.scene.layout.Pane;
+import com.google.common.util.concurrent.FutureCallback;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import jpa.converters.enums.PriceType;
 import jpa.converters.enums.UnitType;
 import kernel.events.ConnectionException;
@@ -25,11 +23,12 @@ public interface DepotManager {
      * @throws ConnectionException if database connection fails during query
      */
     public void productIn(
-            StackPane activePanel , int partiNo , int companyId, int
-            companyUserId, int productId, long units, UnitType unitsType, int depoId, long price ,
-            PriceType priceType , String aciklama) throws ConnectionException;
+            StackPane activePanel , int partiNo , int companyId, int companyUserId, int productId,
+            long units, UnitType unitsType, int depoId, long price , PriceType priceType ,
+            String aciklama,FutureCallback<Object> futureCallback) throws ConnectionException;
 
-    public void productOut(int partiNo, int companyId , int companyUserId , int productId, long count, int depoId, long tutar, String aciklama) throws ConnectionException;
+    public void productOut(StackPane stackPane,int partiNo, int companyId, int companyUserId, int productId, long count,
+                           int depoId, long tutar, String aciklama, FutureCallback<Object> futureCallback) throws ConnectionException;
 
     public void productMove( int targetDepotId , int sourceDepotId , int partiNo ,  int companyId , int productId , long count , int depoId , long tutar , String aciklama ) throws ConnectionException;
 

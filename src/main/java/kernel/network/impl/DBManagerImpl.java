@@ -85,7 +85,6 @@ public class DBManagerImpl implements DBManager {
             Set<ManagedType<?>> managedTypes = mainData.getMetamodel().getManagedTypes();
 
             managedTypes.forEach(managedType -> {
-                        System.out.println(managedType);
                         Class<?> javaType = managedType.getJavaType();
                         try {
                             Class<?> aClass = javaType;
@@ -145,16 +144,32 @@ public class DBManagerImpl implements DBManager {
     public boolean connectNTLM() throws ConnectionException {
 //        final String value = connectionNTLM.value();
         Properties stringMap = new Properties();
+//        try {
+//            stringMap.put("javax.persistence.jdbc.url", service);
+//            mainData = Persistence.createEntityManagerFactory("MainData", stringMap);
+//            entityManager = mainData.createEntityManager();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         stringMap.put("javax.persistence.jdbc.url", service);
+//        try {
+//            mainData = Persistence.createEntityManagerFactory("MainData", stringMap);
+//            entityManager = mainData.createEntityManager();
+//            this.criteriaBuilder = mainData.getCriteriaBuilder();
+//            currentProperties = stringMap;
+//        } catch (Exception e) {
+//            System.out.println(e);
+//            e.printStackTrace();
+//        }
+
         mainData = Persistence.createEntityManagerFactory("MainData", stringMap);
-        final EntityManager entityManager = mainData.createEntityManager();
-        this.entityManager = entityManager;
+        entityManager = mainData.createEntityManager();
         this.criteriaBuilder = mainData.getCriteriaBuilder();
         currentProperties = stringMap;
+
         Set<ManagedType<?>> managedTypes = mainData.getMetamodel().getManagedTypes();
         final Method[] lastMethod = new Method[1];
         managedTypes.forEach(managedType -> {
-                    System.out.println(managedType);
                     Class<?> javaType = managedType.getJavaType();
                     try {
                         Class<?> aClass = javaType;
@@ -164,14 +179,14 @@ public class DBManagerImpl implements DBManager {
                             for (Annotation declaredAnnotation : declaredAnnotations) {
                                 if (declaredAnnotation.annotationType() == PostInit.class) {
                                     lastMethod[0] = method;
-                                    if(method != null)
+                                    if (method != null)
                                         method.invoke(null);
                                 }
                             }
                         }
                     } catch (Exception e) {
-                        if(lastMethod[0] != null) {
-                            System.out.println(lastMethod[0].getDeclaringClass());
+                        if (lastMethod[0] != null) {
+//                            System.out.println(lastMethod[0].getDeclaringClass());
                         }
                         e.printStackTrace();
                     }

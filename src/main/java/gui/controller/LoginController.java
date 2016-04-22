@@ -72,7 +72,6 @@ public class LoginController implements Initializable {
 
     @ControllerNetworkInit
     public final void postLoad() {
-        System.out.println("Login Controller Cagrildi");
     }
 
     @FXML

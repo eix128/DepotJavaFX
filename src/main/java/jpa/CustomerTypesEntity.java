@@ -27,9 +27,10 @@ public class CustomerTypesEntity {
     }
 
 
-    public static Supplier<List<CustomerTypesEntity>> getCustomerTypes() {
+    public static Supplier<List<CustomerTypesEntity>> getCustomerByTypes() {
         return customerTypes;
     }
+
 
     @PostInit
     public static void init() {

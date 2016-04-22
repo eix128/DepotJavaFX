@@ -4,6 +4,11 @@ package jpa.converters.enums;
  * Created by kadir.basol on 29.3.2016.
  */
 
+import globals.GlobalDatas;
+import main.gui.ComboList;
+
+import java.util.ResourceBundle;
+
 /**
  * Birim ağırlık hesaplama türü
  */
@@ -11,9 +16,12 @@ public enum UnitType {
     BOX((byte)1),KG((byte) 2),TON((byte)3),OTHER((byte)-1);
 
     private Byte value;
+    private ResourceBundle resourceBundle;
 
     UnitType(byte b) {
         this.value = b;
+        resourceBundle = GlobalDatas.getInstance().getInjector().getInstance(ResourceBundle.class);
+
     }
 
     public Byte getValue() {
@@ -39,13 +47,13 @@ public enum UnitType {
     public String toString() {
         switch (this) {
             case BOX:
-                return "Kutu";
+                return resourceBundle.getString("unitType.Box");
             case KG:
-                return "Kg";
+                return resourceBundle.getString("unitType.Kg");
             case TON:
-                return "Ton";
+                return resourceBundle.getString("unitType.Ton");
             case OTHER:
-                return "Diğer";
+                return resourceBundle.getString("unitType.Other");
         }
         return super.toString();
     }

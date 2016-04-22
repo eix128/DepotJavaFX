@@ -4,13 +4,17 @@ import com.google.common.base.Supplier;
 import com.google.inject.Injector;
 import globals.GlobalDatas;
 import globals.interfaces.PostInit;
+import javafx.application.Platform;
+import javafx.scene.control.ComboBox;
 import jpa.listeners.DepotsEntityListener;
 import jpa.utils.JPAUtils;
 import kernel.network.DBManager;
+import main.gui.ComboList;
 import utils.guava.LazyCache;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -31,55 +35,25 @@ import java.util.concurrent.ConcurrentHashMap;
   @PartNo INT,
   @Success INT OUT
  */
-@NamedStoredProcedureQueries({
-        @NamedStoredProcedureQuery(
-                name = "DepotManager_productIn",
-                procedureName = "DepotManager_productIn",
-                parameters = {
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyId"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "DepotId"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "ProductId"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Units"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "UnitsType"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Price"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "PriceType"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "Description"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "PartNo"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyUserId"),
-                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "Success"),
-                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = String.class, name = "Exception")
-                }
-        ),
-        @NamedStoredProcedureQuery(
-                name = "DepotManager_productOut",
-                procedureName = "DepotManager_productOut",
-                parameters = {
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyId"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "DepotId"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "ProductId"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Units"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "UnitsType"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Price"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "PriceType"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "PartNo"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyUserId"),
-                        @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "Description"),
-                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "Success"),
-                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = String.class, name = "Exception")
-                }
-        )
-})
-public class DepotsEntity {
+
+public class DepotsEntity implements SettableString {
     private int id;
     private Integer depotId;
     private String depotName;
 
-    public static LazyCache<List<DepotsEntity>> depotNames;
-    public static ConcurrentHashMap<Integer, String> depotsMap = new ConcurrentHashMap<Integer, String>();
+    private static LazyCache<List<DepotsEntity>> depotNames;
+    private static ConcurrentHashMap<Integer, String> depotsMap = new ConcurrentHashMap<Integer, String>();
+    private static ConcurrentHashMap<String, DepotsEntity> depotsByName = new ConcurrentHashMap<>();
+    private ComboBox comboBox;
 
 
     public static LazyCache<List<DepotsEntity>> getDepotNames() {
         return depotNames;
+    }
+
+
+    public static ConcurrentHashMap<String, DepotsEntity> getDepotsByNameMap() {
+        return depotsByName;
     }
 
     public static ConcurrentHashMap<Integer, String> getDepotsMap() {
@@ -87,13 +61,19 @@ public class DepotsEntity {
     }
 
     public DepotsEntity() {
-        this.depotName = "";
+        ResourceBundle instance = GlobalDatas.getInstance().getInjector().getInstance(ResourceBundle.class);
+        this.depotName = instance.getString("mainPanel.all");
         this.id = -1;
     }
 
     public DepotsEntity(Integer depotId, String depotName) {
         this.depotId = depotId;
-        this.depotName = depotName;
+
+        if(depotName == null || depotName.trim().equals("")) {
+            Injector injector = GlobalDatas.getInstance().getInjector();
+            ResourceBundle instance = injector.getInstance(ResourceBundle.class);
+            this.depotName = instance.getString("mainPanel.all");
+        } else this.depotName = depotName;
     }
 
 
@@ -104,15 +84,16 @@ public class DepotsEntity {
             @Override
             public List<DepotsEntity> get() {
                 depotsMap.clear();
+                depotsByName.clear();
                 List<DepotsEntity> resultList = allData.getResultList();
-                resultList.add(0,new DepotsEntity());
                 for (DepotsEntity depotsEntity : resultList) {
                     depotsMap.put(depotsEntity.getId(), depotsEntity.getDepotName());
+                    depotsByName.put(depotsEntity.getDepotName(),depotsEntity);
                 }
                 return resultList;
             }
         });
-
+        depotNames.get();
         Injector injector = GlobalDatas.getInstance().getInjector();
         DBManager instance = injector.getInstance(DBManager.class);
         instance.addRefresh(depotNames);
@@ -174,4 +155,28 @@ public class DepotsEntity {
     public String toString() {
         return depotName;
     }
+
+    @Override
+    public void setString(String data) {
+        ComboList instance1 = GlobalDatas.getInstance().getInjector().getInstance(ComboList.class);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                instance1.getByName("Main.transactionType").setValue(this);
+            }
+        });
+    }
+
+    @Transient
+    @Override
+    public String getString() {
+        return depotName;
+    }
+
+    @Transient
+    @Override
+    public DepotsEntity getValue() {
+        return this;
+    }
+
 }

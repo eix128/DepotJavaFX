@@ -13,6 +13,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -20,15 +21,28 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.BuilderFactory;
 import javafx.util.Callback;
+import jpa.converters.enums.ProcessType;
 import kernel.network.DBManager;
 import kernel.threads.network.NetworkThread;
 import main.gui.GuiceControllerFactory;
+import org.jnativehook.GlobalScreen;
+import org.jnativehook.NativeHookException;
+import org.jnativehook.keyboard.NativeKeyEvent;
+import org.jnativehook.keyboard.NativeKeyListener;
+import utils.ThermalPrinter;
+import utils.natives.NativeUtilities;
 
+import javax.print.PrintException;
+import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * Created by kadir.basol on 19.2.2016.
@@ -38,6 +52,7 @@ public class DepoMain extends Application {
     private FXPanels fxPanels;
 
     private DBManager dbManager;
+    private Stage     primaryStage;
 
 
     public DepoMain() throws IOException {
@@ -46,7 +61,8 @@ public class DepoMain extends Application {
 
 
     public void setupPanels(Injector injector, AgentFinderModule agentFinderModule, BuilderFactory builderFactory, Callback<Class<?>, Object> guiceControllerFactory) throws IOException {
-/*
+
+        /*
         FXMLLoader loginViewLoader = new FXMLLoader(agentFinderModule.getClass().getResource("/login.fxml"), null, builderFactory, guiceControllerFactory);
         Pane loginView = (Pane) loginViewLoader.load();
         LoginController controller1 = loginViewLoader.getController();
@@ -77,7 +93,7 @@ public class DepoMain extends Application {
 
 //        agentFinderModule.configurePanels( loginPair , productInPair , stockPair , productOutPair );
         fxPanels = injector.getInstance(FXPanels.class);
-        fxPanels.register(agentFinderModule, builderFactory, guiceControllerFactory);
+        fxPanels.register(agentFinderModule, builderFactory, guiceControllerFactory , primaryStage );
 
         StackPane loginView = fxPanels.addPanel("/login.fxml", "LoginView");
         fxPanels.addPanel("/depoStokEkrani.fxml", "StockView");
@@ -161,10 +177,6 @@ public class DepoMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-//        NativeLoader.loadLibrary("ntlmauth");
-        final Path path = FileSystems.getDefault().getPath(".", "lib", "natives", "win32");
-        final String canonicalPath = path.toFile().getCanonicalPath();
-        setLibraryPath(canonicalPath);
         final AgentFinderModule agentFinderModule = new AgentFinderModule();
         final Injector injector = Guice.createInjector(agentFinderModule);
         GlobalDatas.getInstance().setInjector(injector);
@@ -172,7 +184,7 @@ public class DepoMain extends Application {
         setupPanels(injector, agentFinderModule, injector.getInstance(BuilderFactory.class), guiceControllerFactory);
 
 
-        final DBManager dbManager = injector.getInstance(DBManager.class);
+//        final DBManager dbManager = injector.getInstance(DBManager.class);
 
 
         final BorderPane mainBorder = injector.getInstance(Key.get(BorderPane.class, Names.named("MainBorder")));
@@ -191,12 +203,50 @@ public class DepoMain extends Application {
                 System.exit(0);
             }
         });
+//        primaryStage.setFullScreen(true);
         primaryStage.show();
+        this.primaryStage = primaryStage;
 //        mainBorder.setCenter(loginView);
 
     }
+    public static void main(String[] args) throws Exception {
+        LogManager.getLogManager().reset();
 
-    public static void main(String[] args) throws IOException {
+        // Get the logger for "org.jnativehook" and set the level to off.
+        Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
+        logger.setLevel(Level.OFF);
+
+        System.out.println("JVM Bit size: " + System.getProperty("sun.arch.data.model"));
+        try {
+            GlobalScreen.registerNativeHook();
+            GlobalScreen.addNativeKeyListener(new NativeKeyListener() {
+                @Override
+                public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
+                    if (nativeKeyEvent.getKeyCode() == NativeKeyEvent.VC_F12) {
+                        try {
+                            ThermalPrinter.PrintLastString();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        } catch (PrintException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void nativeKeyReleased(NativeKeyEvent nativeKeyEvent) {
+
+                }
+
+                @Override
+                public void nativeKeyTyped(NativeKeyEvent nativeKeyEvent) {
+
+                }
+            });
+        } catch (NativeHookException e) {
+            e.printStackTrace();
+        }
+//        NativeUtilities.setLibraryPath( path.toAbsolutePath().toString() );
         launch();
     }
 

@@ -1,12 +1,9 @@
 package kernel.actors.impl;
 
 import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 import jpa.converters.enums.PriceType;
 import jpa.converters.enums.UnitType;
 import kernel.actors.DepotManager;
@@ -15,10 +12,13 @@ import kernel.events.ConnectionException;
 import kernel.network.DBManager;
 import kernel.threads.network.NetworkThread;
 import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import javax.persistence.EntityManager;
+import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureQuery;
 import java.time.LocalDate;
+
 import java.util.concurrent.Callable;
 
 /**
@@ -40,13 +40,18 @@ public class DepotManagerImpl implements DepotManager {
     public void productIn(
             StackPane activePanel , int partiNo , int companyId, int
             companyUserId, int productId, long units, UnitType unitsType, int depoId, long price ,
-            PriceType priceType , String aciklama) throws ConnectionException {
+            PriceType priceType , String aciklama , FutureCallback<Object> futureCallback) throws ConnectionException {
 //        CREATE RULE range_rule AS @range>= $1000 AND @range <$20000;
 //        Toplam depodaki urune ekleme yap ve lokasyonu belirt firma ismi
 
         final EntityManager entityManager = dbManager.get();
 
         networkThread.aSyncOperation(activePanel, new Callable<Object>() {
+            /**
+             *
+             * @return Triplet with Success , Message , processId
+             * @throws Exception
+             */
             @Override
             public Object call() throws Exception {
                 StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("DepotManager_productIn");
@@ -62,28 +67,20 @@ public class DepotManagerImpl implements DepotManager {
                 query.setParameter("CompanyUserId", companyUserId);
                 query.execute();
                 final Integer outputParameterValue = (Integer) query.getOutputParameterValue("Success");
-                final Object message = query.getOutputParameterValue("Message");
-                return new Pair<Integer, String>(outputParameterValue, message.toString());
+                final Object message = query.getOutputParameterValue("Exception");
+                final Object processId = query.getOutputParameterValue("ProcessOut");
+                return new Triplet<Integer, String , Long>(outputParameterValue, message == null ? null : message.toString(), Long.valueOf(processId.toString()) );
             }
-        }, new FutureCallback<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        }, futureCallback );
     }
 
 
     @Override
-    public void productOut(int partiNo, int companyId , int companyUserId , int productId, long count, int depoId, long tutar, String aciklama) throws ConnectionException {
+    public void productOut(StackPane stackPane,int partiNo, int companyId, int companyUserId, int productId, long count, int depoId,
+                           long tutar, String aciklama, FutureCallback<Object> futureCallback) throws ConnectionException {
         final EntityManager entityManager = dbManager.get();
         //        Toplam depodaki urune ekleme yap ve lokasyonu belirt firma ismi
-        networkThread.aSyncOperation(null, new Callable<Object>() {
+        networkThread.aSyncOperation(stackPane, new Callable<Object>() {
             @Override
             public Object call() throws Exception {
                 StoredProcedureQuery query = entityManager.createNamedStoredProcedureQuery("DepotManager_productOut");
@@ -109,20 +106,11 @@ public class DepotManagerImpl implements DepotManager {
                 query.setParameter("CompanyUserId", companyUserId);
                 query.execute();
                 final Integer outputParameterValue = (Integer) query.getOutputParameterValue("Success");
-                final Object message = query.getOutputParameterValue("Message");
-                return new Pair<Integer, String>(outputParameterValue, message.toString());
+                final Object message = query.getOutputParameterValue("Exception");
+                final Object processId = query.getOutputParameterValue("ProcessOut");
+                return new Triplet<Integer, String , Long>(outputParameterValue, message == null ? null : message.toString(), Long.valueOf(processId.toString()) );
             }
-        }, new FutureCallback<Object>() {
-            @Override
-            public void onSuccess(Object result) {
-
-            }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        },futureCallback);
     }
 
     @Override

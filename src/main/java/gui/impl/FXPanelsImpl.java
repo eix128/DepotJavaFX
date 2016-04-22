@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import javafx.util.BuilderFactory;
 import javafx.util.Callback;
 import main.AgentFinderModule;
@@ -38,6 +39,7 @@ public class FXPanelsImpl implements FXPanels {
     private AgentFinderModule agentFinderModule;
     private BuilderFactory builderFactory;
     private Callback<Class<?>, Object> guiceControllerFactory;
+    private Stage primaryStage;
 
     public FXPanelsImpl() {
         activePanel = null;
@@ -149,9 +151,18 @@ public class FXPanelsImpl implements FXPanels {
 
 
     @Override
-    public void register(AgentFinderModule agentFinderModule, BuilderFactory builderFactory, Callback<Class<?>, Object> guiceControllerFactory) {
+    public void register(AgentFinderModule agentFinderModule, BuilderFactory builderFactory, Callback<Class<?>, Object> guiceControllerFactory, Stage primaryStage) {
         this.agentFinderModule = agentFinderModule;
         this.builderFactory = builderFactory;
         this.guiceControllerFactory = guiceControllerFactory;
+        this.primaryStage = primaryStage;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
     }
 }

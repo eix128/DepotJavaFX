@@ -4,12 +4,17 @@ import com.google.common.base.Supplier;
 import com.google.inject.Injector;
 import globals.GlobalDatas;
 import globals.interfaces.PostInit;
+import javafx.application.Platform;
+import javafx.scene.control.ComboBox;
+import jpa.converters.enums.ProcessType;
 import jpa.utils.JPAUtils;
 import kernel.network.DBManager;
+import main.gui.ComboList;
 import utils.guava.LazyCache;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -17,8 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Entity
 @Table(name = "products", schema = "dbo", catalog = "jdepo")
-public class ProductsEntity {
-
+public class ProductsEntity implements SettableString {
 
     private int id;
     private String productName;
@@ -27,13 +31,18 @@ public class ProductsEntity {
     private String description;
     private Float  avgWeight;
 
+
     private static ConcurrentHashMap<Integer,String> productsMap = new ConcurrentHashMap<>( );
+    private static ConcurrentHashMap<String,ProductsEntity> productsMapByName = new ConcurrentHashMap<>( );
+    private ComboBox comboBox;
 
 
     public ProductsEntity() {
-        this.productName = "";
+        ResourceBundle instance = GlobalDatas.getInstance().getInjector().getInstance(ResourceBundle.class);
+        this.productName = instance.getString("mainPanel.all");
         this.id = -1;
     }
+
 
     public static ConcurrentHashMap<Integer, String> getProductsMap() {
         return productsMap;
@@ -45,6 +54,10 @@ public class ProductsEntity {
         return productsList;
     }
 
+    public static ConcurrentHashMap<String, ProductsEntity> getProductsMapByName() {
+        return productsMapByName;
+    }
+
     @PostInit
     public static void init() {
         TypedQuery<ProductsEntity> allData = JPAUtils.getAllData(ProductsEntity.class);
@@ -52,10 +65,11 @@ public class ProductsEntity {
             @Override
             public List<ProductsEntity> get() {
                 productsMap.clear();
+                productsMapByName.clear();
                 final List<ProductsEntity> resultList = allData.getResultList();
-                resultList.add(0,new ProductsEntity());
                 resultList.parallelStream().forEach( action -> {
                     productsMap.put( action.getId() , action.getProductName() );
+                    productsMapByName.put( action.getProductName() , action );
                 });
                 return resultList;
             }
@@ -122,7 +136,7 @@ public class ProductsEntity {
     }
 
 
-
+    @Basic
     @Column(name = "description")
     public String getDescription() {
         return description;
@@ -145,4 +159,29 @@ public class ProductsEntity {
     public String toString() {
         return productName;
     }
+
+    @Override
+    public void setString(String data) {
+        ComboList instance1 = GlobalDatas.getInstance().getInjector().getInstance(ComboList.class);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                instance1.getByName("Main.transactionType").setValue(this);
+            }
+        });
+    }
+
+    @Transient
+    @Override
+    public String getString() {
+        return productName;
+    }
+
+    @Transient
+    @Override
+    public ProductsEntity getValue() {
+        return this;
+    }
+
+
 }

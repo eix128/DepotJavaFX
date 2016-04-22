@@ -1,22 +1,20 @@
 package jpa;
 
 import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
-import com.google.inject.Singleton;
 import globals.GlobalDatas;
 import globals.interfaces.PostInit;
+import javafx.scene.control.ComboBox;
+import jpa.converters.CustomerTypeConverter;
+import jpa.converters.enums.CustomerType;
 import jpa.utils.JPAUtils;
 import kernel.network.DBManager;
 import utils.guava.LazyCache;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -24,13 +22,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Entity
 @Table(name = "customer", schema = "dbo", catalog = "jdepo")
-public class CustomerEntity {
+public class CustomerEntity implements SettableString {
 
     private int id;
     private String name;
     private String surname;
-    private String unvan;
-    private Byte type;
+    private String title;
+    private CustomerType type;
     private String phoneNumber;
     private String address;
     private Long tcKimlik;
@@ -43,10 +41,21 @@ public class CustomerEntity {
 
 
     private static LazyCache<List<CustomerEntity>> customersList;
-    private static ConcurrentHashMap<Integer,String> customersMap = new ConcurrentHashMap<>( );
+    private static ConcurrentHashMap<Integer,CustomerEntity> customersMapById = new ConcurrentHashMap<>( );
+    private static ConcurrentHashMap<String,CustomerEntity> customersMapByTitle = new ConcurrentHashMap<>( );
+    private static ConcurrentHashMap<CustomerType,List<CustomerEntity>> customersMapByCompanyType = new ConcurrentHashMap<>( );
 
-    public static ConcurrentHashMap<Integer, String> getCustomersMap() {
-        return customersMap;
+
+    private static LazyCache<List<CustomerEntity>> customerByType;
+    private ComboBox comboBox;
+
+    public static ConcurrentHashMap<Integer, CustomerEntity > getCustomerById() {
+        return customersMapById;
+    }
+
+
+    public static ConcurrentHashMap<CustomerType, List<CustomerEntity>> getCustomersMapByCompanyType() {
+        return customersMapByCompanyType;
     }
 
     public static LazyCache<List<CustomerEntity>> getCustomersList() {
@@ -57,19 +66,38 @@ public class CustomerEntity {
     @PostInit
     public static void init() {
         TypedQuery<CustomerEntity> allData = JPAUtils.getAllData(CustomerEntity.class);
+
         customersList = new LazyCache<List<CustomerEntity>>(new Supplier<List<CustomerEntity>>() {
             @Override
             public List<CustomerEntity> get() {
-                List<CustomerEntity> resultList = allData.getResultList();
-                resultList.add(0,new CustomerEntity());
+                List<CustomerEntity> resultList = null;
+                try {
+                    resultList = allData.getResultList();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+//                resultList.add(0,new CustomerEntity());
+                customersMapByTitle.clear();
+                customersMapByCompanyType.clear();
                 for (CustomerEntity customerEntity : resultList) {
-                    if(customerEntity.getId() != -1)
-                    customersMap.put( customerEntity.getId() , customerEntity.getUnvan() );
+                    if(customerEntity.getId() != -1) {
+                        customersMapById.put(customerEntity.getId(), customerEntity);
+                        customersMapByTitle.put(customerEntity.getTitle(),customerEntity);
+                        final List<CustomerEntity> customerEntity1 = customersMapByCompanyType.get(customerEntity.getType());
+                        if(customerEntity1 == null) {
+                            ArrayList<CustomerEntity> list = new ArrayList( );
+                            list.add(customerEntity);
+                            customersMapByCompanyType.put(customerEntity.getType(),list);
+                        } else {
+                            customerEntity1.add(customerEntity);
+                        }
+                    }
                 }
                 return resultList;
             }
         });
         customersList.get();
+
         Injector injector = GlobalDatas.getInstance().getInjector();
         DBManager instance = injector.getInstance(DBManager.class);
         instance.addRefresh(customersList);
@@ -79,6 +107,8 @@ public class CustomerEntity {
     public CustomerEntity() {
         this.name = "";
         this.surname = "";
+        ResourceBundle instance = GlobalDatas.getInstance().getInjector().getInstance(ResourceBundle.class);
+        this.title = instance.getString("mainPanel.all");
         this.id = -1;
     }
 
@@ -124,23 +154,25 @@ public class CustomerEntity {
     }
 
     @Basic
-    @Column(name = "unvan", nullable = true, length = 64)
-    public String getUnvan() {
-        return unvan;
+    @Column(name = "title", nullable = false, length = 64)
+    public String getTitle() {
+        return title;
     }
 
-    public void setUnvan(String unvan) {
-        this.unvan = unvan;
+    public void setTitle(String unvan) {
+        this.title = unvan;
+    }
+
+
+    public void setType(CustomerType type) {
+        this.type = type;
     }
 
     @Basic
-    @Column(name = "type", nullable = true)
-    public Byte getType() {
+    @Column(name = "type" , columnDefinition = "TINYINT")
+    @Convert(converter = CustomerTypeConverter.class )
+    public CustomerType getType() {
         return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
     }
 
     @Basic
@@ -216,18 +248,6 @@ public class CustomerEntity {
         CustomerEntity that = (CustomerEntity) o;
 
         if (id != that.id) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (surname != null ? !surname.equals(that.surname) : that.surname != null) return false;
-        if (unvan != null ? !unvan.equals(that.unvan) : that.unvan != null) return false;
-        if (type != null ? !type.equals(that.type) : that.type != null) return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
-        if (address != null ? !address.equals(that.address) : that.address != null) return false;
-        if (tcKimlik != null ? !tcKimlik.equals(that.tcKimlik) : that.tcKimlik != null) return false;
-        if (vergiKimlik != null ? !vergiKimlik.equals(that.vergiKimlik) : that.vergiKimlik != null) return false;
-
-        if (country != null ? !country.equals(that.country) : that.country != null) return false;
-        if (province != null ? !province.equals(that.province) : that.province != null) return false;
-        if (city != null ? !city.equals(that.city) : that.city != null) return false;
 
         return true;
     }
@@ -235,24 +255,33 @@ public class CustomerEntity {
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (unvan != null ? unvan.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (tcKimlik != null ? tcKimlik.hashCode() : 0);
-        result = 31 * result + (vergiKimlik != null ? vergiKimlik.hashCode() : 0);
-
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (province != null ? province.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-
         return result;
     }
 
     @Override
     public String toString() {
-        return name + " " + surname;
+        return title;
+    }
+
+
+    @Override
+    public void setString(String data) {
+        comboBox.setValue(this);
+    }
+
+    @Transient
+    @Override
+    public String getString() {
+        return title;
+    }
+
+    @Transient
+    @Override
+    public CustomerEntity getValue() {
+        return this;
+    }
+
+    public static CustomerEntity getCustomersByTitle(String string) {
+        return customersMapByTitle.get(string);
     }
 }

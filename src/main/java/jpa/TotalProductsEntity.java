@@ -1,7 +1,14 @@
 package jpa;
 
+import com.google.common.base.Supplier;
+import globals.interfaces.PostInit;
+import jpa.utils.JPAUtils;
+import utils.guava.LazyCache;
+
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -11,6 +18,8 @@ import java.util.Date;
 @Table(name = "totalProducts", schema = "dbo", catalog = "jdepo")
 public class TotalProductsEntity {
 
+    private static LazyCache<List<TotalProductsEntity>> depotNames;
+
     private int productId;
     private Integer companyId;
     private Integer depotId;
@@ -19,6 +28,13 @@ public class TotalProductsEntity {
     private int id;
     private Long partiNo;
     private Date dateAdded;
+    private int index;
+
+
+    public static LazyCache<List<TotalProductsEntity>> getTotalProducts() {
+        return depotNames;
+    }
+
 
     public TotalProductsEntity(int productId, Integer companyId, Integer depotId, Long units) {
         this.productId = productId;
@@ -29,6 +45,19 @@ public class TotalProductsEntity {
 
     public TotalProductsEntity() {
 
+    }
+
+    @PostInit
+    public static void init() {
+        final TypedQuery<TotalProductsEntity> allData = JPAUtils.getAllData(TotalProductsEntity.class);
+        depotNames = new LazyCache<List<TotalProductsEntity>>(new Supplier<List<TotalProductsEntity>>() {
+            @Override
+            public List<TotalProductsEntity> get() {
+                List<TotalProductsEntity> resultList = allData.getResultList();
+//                resultList.add(0,new TotalProductsEntity());
+                return resultList;
+            }
+        });
     }
 
     @Basic
@@ -82,7 +111,8 @@ public class TotalProductsEntity {
     }
 
 
-
+    @Basic
+    @Column(name = "unitType")
     public Byte getUnitType() {
         return unitType;
     }
@@ -138,5 +168,14 @@ public class TotalProductsEntity {
         result = 31 * result + (partiNo != null ? partiNo.hashCode() : 0);
         result = 31 * result + (dateAdded != null ? dateAdded.hashCode() : 0);
         return result;
+    }
+
+    @Transient
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

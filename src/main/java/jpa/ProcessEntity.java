@@ -1,33 +1,74 @@
 package jpa;
 
 import jpa.converters.ProcessTypeConverter;
+import jpa.converters.enums.ProcessType;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
  * Created by kadir.basol on 21.3.2016.
  */
+@NamedStoredProcedureQueries({
+        @NamedStoredProcedureQuery(
+                name = "DepotManager_productIn",
+                procedureName = "DepotManager_productIn",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyId"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "DepotId"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "ProductId"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Units"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "UnitsType"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Price"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "PriceType"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "Description"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "PartNo"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyUserId"),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = Long.class, name = "ProcessOut" ),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "Success"),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = String.class, name = "Exception")
+                }
+        ),
+        @NamedStoredProcedureQuery(
+                name = "DepotManager_productOut",
+                procedureName = "DepotManager_productOut",
+                parameters = {
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyId"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "DepotId"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "ProductId"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Units"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "UnitsType"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Long.class, name = "Price"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Byte.class, name = "PriceType"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "PartNo"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = Integer.class, name = "CompanyUserId"),
+                        @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "Description"),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = Long.class, name = "ProcessOut"),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = Integer.class, name = "Success"),
+                        @StoredProcedureParameter(mode = ParameterMode.OUT, type = String.class, name = "Exception")
+                }
+        )
+})
 @Entity
 @Table(name = "process", schema = "dbo", catalog = "jdepo")
-public class ProcessEntity implements Comparable<Integer> {
-    private int id;
-    private Integer depotId;
-    private Integer productId;
-    private Byte processType;
-    private Integer companyId;
-    private Integer companyUserId;
-    private Long units;
-    private Byte unitType;
-    private String description;
-    private Long partNo;
-    private Integer ownerId;
-    private Date    actionDate;
-    private Long    price;
-    private Byte    priceType;
+public class ProcessEntity implements Comparable<Long> {
 
-    private int     index;
+    private Long        id;
+    private Integer     depotId;
+    private Integer     productId;
+    private ProcessType processType;
+    private Integer     companyId;
+    private Integer     companyUserId;
+    private Long        units;
+    private Byte        unitType;
+    private String      description;
+    private Long        partNo;
+    private Integer     ownerId;
+    private Date        actionDate;
+    private Long        price;
+    private Byte        priceType;
+
+    private int         index;
 
     public ProcessEntity() {
     }
@@ -42,7 +83,7 @@ public class ProcessEntity implements Comparable<Integer> {
         this.actionDate = actionDate;
     }
 
-    public ProcessEntity(Integer depotId, Byte processType, Integer companyId,
+    public ProcessEntity(Integer depotId, ProcessType processType, Integer companyId,
                          Integer companyUserId, Long processAmount, Byte processAmountType, String description, Long partNo, Integer ozidasUserId,
                          Date actionDate) {
         this.depotId = depotId;
@@ -78,11 +119,11 @@ public class ProcessEntity implements Comparable<Integer> {
 
     @Id
     @Column(name = "id", nullable = false)
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -205,36 +246,24 @@ public class ProcessEntity implements Comparable<Integer> {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (depotId != null ? depotId.hashCode() : 0);
-        result = 31 * result + (productId != null ? productId.hashCode() : 0);
-        result = 31 * result + (processType != null ? processType.hashCode() : 0);
-        result = 31 * result + (companyId != null ? companyId.hashCode() : 0);
-        result = 31 * result + (companyUserId != null ? companyUserId.hashCode() : 0);
-        result = 31 * result + (units != null ? units.hashCode() : 0);
-        result = 31 * result + (unitType != null ? unitType.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (partNo != null ? partNo.hashCode() : 0);
-        result = 31 * result + (ownerId != null ? ownerId.hashCode() : 0);
-        result = 31 * result + (actionDate != null ? actionDate.hashCode() : 0);
-        result = 31 * result + (price != null ? price.hashCode() : 0);
-        result = 31 * result + (priceType != null ? priceType.hashCode() : 0);
-        return result;
+        Long result = id;
+        return result.hashCode();
     }
 
     @Column(name = "processType")
-    public Byte getProcessType() {
+    @Convert(converter = ProcessTypeConverter.class)
+    public ProcessType getProcessType() {
         return processType;
     }
 
-    public void setProcessType(Byte processType) {
+    public void setProcessType(ProcessType processType) {
         this.processType = processType;
     }
 
     @Override
-    public int compareTo(Integer o) {
-        int id = this.getId();
-        return Integer.compare(id,o);
+    public int compareTo(Long o) {
+        Long id = this.getId();
+        return Long.compare(id,o);
     }
 
     @Transient

@@ -35,6 +35,9 @@ WHEN NOT MATCHED BY TARGET THEN
 INSERT ( userName , userSurname , tcIdentityNo ) VALUES (NewName, NewReasonType , 111 );
 
 
+javadoc download
+mvn eclipse:eclipse -DdownloadSources=true  -DdownloadJavadocs=true
+
 
 IF (NOT EXISTS(SELECT * FROM Clock WHERE clockDate = '08/10/2012')
     AND userName = 'test')
@@ -114,6 +117,11 @@ Termal Printer SDK
 }
 
 
+komut termal printer
+http://stackoverflow.com/questions/32697430/command-for-thermal-printer-in-java
+
+
+
 
 
 row index almak mysql:
@@ -126,6 +134,18 @@ FROM
 
 
 
+Hash ekleme yapmak için
+CREATE TABLE HashResult
+(
+ObservationID INT IDENTITY(1,1)
+, HashValue_i INT
+)
+CREATE CLUSTERED INDEX CIX ON HashResult (HashValue_i)
+
+INSERT INTO T_KULLANICI
+    (KULLANICI_KODU, KULLANICI_ADI, KULLANICI_SIFRE, KAYIT_TARIHI)
+VALUES
+    (@KULLANICI_KODU, @KULLANICI_ADI, HASHBYTES('MD5', @KULLANICI_SIFRE), GETDATE())
 
 
 uniform extern texture ScreenTexture;

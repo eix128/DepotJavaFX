@@ -1,5 +1,4 @@
 package kernel.threads.network.impl;
-
 import com.google.common.util.concurrent.*;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -16,9 +15,6 @@ import org.javatuples.Pair;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 
-/**
- * Created by kadir.basol on 25.3.2016.
- */
 @Singleton
 public class NetworkThreadImpl implements NetworkThread {
 
@@ -45,7 +41,6 @@ public class NetworkThreadImpl implements NetworkThread {
     @Override
     public void aSyncOperation( StackPane actionPanel , Callable<Object> callable ,  FutureCallback<Object> futureCallback ) {
         final Pair<Pane, Object> waıt = fxPanels.getByName("WAIT");
-        actionPanel.getChildren().add( waıt.getValue0() );
         ListenableFuture<Object> submit = networkThread.submit(callable);
 
         FutureCallback futurePre = new FutureCallback<Object>() {
@@ -58,7 +53,6 @@ public class NetworkThreadImpl implements NetworkThread {
                     }
                 });
                 futureCallback.onSuccess(o);
-//                stackpane wait pop
             }
 
             @Override
@@ -81,7 +75,4 @@ public class NetworkThreadImpl implements NetworkThread {
     public void registerWaitPanel(Parent pane) {
         this.waitParent = pane;
     }
-
-
-
 }
